@@ -10,6 +10,8 @@ import { ErrorPage } from "./pages/ErrorPage"
 import { CategoriesProduct } from "./pages/CategoriesProduct"
 import { Customer } from "./pages/Customer"
 import { BlogCategory } from "./pages/BlogCategory"
+import { Colors } from "./pages/Colors"
+import { Brands } from "./pages/ProductAdd/Brands"
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
             <Route path="/admin/customer" element={<Customer />} />
             <Route path="/admin/product-category" element={<CategoriesProduct />} />
             <Route path="/admin/blogs/category" element={<BlogCategory />} />
+            <Route path="/admin/color-product" element={<Colors />} />
+            <Route path="/admin/brands" element={<Brands />} />
 
           </Route>
 

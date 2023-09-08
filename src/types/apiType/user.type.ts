@@ -6,11 +6,6 @@ import { ResponseMessageType } from "../CommonTpye";
 
 
 export type FormDataLogin = Pick<Schema, 'email' | 'password'>
-export interface User {
-   email: string;
-   password: string;
-
-}
 
 export interface AuthUser {
    _id?: string;

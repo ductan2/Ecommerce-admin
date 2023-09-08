@@ -22,7 +22,8 @@ export const menuData: MenuDataType =
             "submenu": {
                "links": [
                   { "href": "/admin/products", "text": "Product list" },
-                  { "href": "/admin/product-category", "text": "Categories Product" }
+                  { "href": "/admin/product-category", "text": "Categories Product" },
+                  { "href": "/admin/color-product", "text": "Colors" }
                ]
             }
          },
@@ -123,10 +124,11 @@ export const menuData: MenuDataType =
       {
          menu_item: {
             menu_link: {
-               "href": "page-brands.html",
+               "href": "/admin/brands",
                "icon": "material-icons md-stars",
                "text": "Brands"
-            }
+            },
+            
          }
       },
       {

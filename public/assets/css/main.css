@@ -2917,6 +2917,12 @@ footer.main-footer {
   overflow-y: auto !important;
   overflow-x: hidden !important; }
 
+.color-product {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%; }
+
 body.dark {
   background-color: #222736;
   color: #fff; }
