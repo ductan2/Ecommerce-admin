@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from '../store/store'
 import { useSelector } from 'react-redux'
 import { getAllBlogCategory } from '../features/blogCategory/blogCategorySlice'
 import { Loading } from '../components/loading/Loading'
+import { Heading } from '../components/heading/Heading'
 
 
 export const BlogCategory = () => {
@@ -20,15 +21,7 @@ export const BlogCategory = () => {
   return (
     <>
       <section className="content-main">
-        <div className="content-header">
-          <div>
-            <h2 className="content-title card-title">Categories</h2>
-            <p>Add, edit or delete a category</p>
-          </div>
-          <div>
-            <input type="text" placeholder="Search Categories" className="form-control bg-white" />
-          </div>
-        </div>
+        <Heading title='Categories Blog' slogan='Add, edit or delete a category' isSearch placeholder='Search Categories ' />
         <div className="card">
           <div className="card-body">
             <div className="row">

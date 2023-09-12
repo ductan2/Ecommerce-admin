@@ -2,11 +2,11 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import productServices from './productServices';
+import orderServices from './orderServices';
 import { AsyncState } from '../../types/CommonTpye';
-import { Product } from '../../types/apiType/product.type';
+import { Order } from '../../types/apiType/orders.type';
 
-const initialState: AsyncState<Product> = {
+const initialState: AsyncState<Order> = {
    data: [],
    isError: false,
    isLoading: false,
@@ -14,24 +14,25 @@ const initialState: AsyncState<Product> = {
    message: "",
 }
 
-export const getproducts = createAsyncThunk<Product[]>("products/get-all-product", async () => {
+export const getOrder = createAsyncThunk<Order[]>("orders/get-all-orders", async () => {
    try {
-      const response = await productServices.getProducts();
+      const response = await orderServices.getOrders();
+      console.log("res", response.data.result)
       return response.data.result;
    } catch (error) {
       return error
    }
 });
 
-export const productSlice = createSlice({
-   name: 'products',
+export const orderSlice = createSlice({
+   name: 'orders',
    initialState,
    reducers: {},
    extraReducers: (builder) => {
-      builder.addCase(getproducts.pending, (state) => {
+      builder.addCase(getOrder.pending, (state) => {
          state.isLoading = true;
       })
-         .addCase(getproducts.fulfilled, (state, action) => {
+         .addCase(getOrder.fulfilled, (state, action) => {
             const data = action.payload;
             state.isLoading = false;
             state.isError = false
@@ -41,7 +42,7 @@ export const productSlice = createSlice({
             }
 
          })
-         .addCase(getproducts.rejected, (state, action) => {
+         .addCase(getOrder.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true
             state.isSuccess = false;
@@ -50,4 +51,4 @@ export const productSlice = createSlice({
    }
 })
 
-export default productSlice.reducer;
+export default orderSlice.reducer;

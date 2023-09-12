@@ -12,7 +12,7 @@ import { LOGIN } from '../../features/auth/authSlice';
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAccount } from "../../features/auth/authServices";
-import { Loading } from "../loading/Loading";
+import { Button } from "../button/Button";
 
 const loginSchema = schema.pick(['email', 'password'])
 
@@ -49,8 +49,8 @@ export const Login = () => {
         const formError = error.response.data
 
         const { message, path } = formError
- 
-        const field =path|| message.split(' ')[0].toLowerCase() 
+
+        const field = path || message.split(' ')[0].toLowerCase()
         setError(field as keyof FormDataLogin, {
           type: "manual",
           message: message,
@@ -92,7 +92,9 @@ export const Login = () => {
               </div>
 
               <div className="mb-4">
-                <button type="submit" className="btn btn-primary w-100 center-flex" style={{ fontWeight: "bold" }}>{isLoading ? <Loading /> : "Login"}</button>
+                <Button type="submit" isLoading={isLoading} className="btn btn-primary w-100 center-flex" style={{ fontWeight: "bold" }} >
+                  Login
+                </Button>
               </div>
 
             </form>

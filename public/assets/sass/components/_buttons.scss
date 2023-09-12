@@ -103,13 +103,35 @@
 		margin-right: 2px;
 	}
 }
-.btn-delete{
+.btn-delete-light{
 	border: 1px solid #FF6A74 ;
 	&:hover{
 		background-color: #E52D27;
 		color: white !important;
 	}
 
+}
+.btn-edit{
+	
+	background-color: $brand;
+	padding: 0.5rem 0.95rem;
+	color: #fff ;
+	&:hover {
+		border:1px solid $brand;
+		background-color: white;
+		color: $brand;
+	}
+}
+.btn-delete{
+	background-color: #E52D27;
+		color: white ;
+	padding: 0.5rem 0.95rem;
+
+		&:hover {
+			background-color: white;
+			border:1px solid #E52D27 !important;
+			color: #E52D27 ;
+		}
 }
 .btn-brand {
 	background-color: $brand;

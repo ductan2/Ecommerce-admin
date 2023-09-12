@@ -14,7 +14,7 @@ const initialState: AsyncState<Blog> = {
    message: "",
 }
 
-export const getAllBlog = createAsyncThunk<Blog[]>("blog-category/get-all", async () => {
+export const getAllBlog = createAsyncThunk<Blog[]>("blog/get-all", async () => {
    try {
       const response = await BlogServices.getAllBlog();
       return response.data.result;
@@ -24,7 +24,7 @@ export const getAllBlog = createAsyncThunk<Blog[]>("blog-category/get-all", asyn
 })
 
 export const customerSlice = createSlice({
-   name: 'blog-category',
+   name: 'blog',
    initialState,
    reducers: {},
    extraReducers: (builder) => {

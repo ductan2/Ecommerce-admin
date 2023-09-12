@@ -1,29 +1,34 @@
 import React from 'react'
-
-interface props {
+import { Control, useController } from 'react-hook-form'
+interface props extends React.InputHTMLAttributes<HTMLInputElement> {
   type: React.HTMLInputTypeAttribute
   errorMessage?: string;
-  placeholder?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control?: Control<any>;
   name?: string;
   id?: string;
   classNameInput?: string;
-  className?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export const Input = ({ type, name, id, placeholder, className, classNameInput, errorMessage, value, onChange }: props) => {
-
+export const Input = ({ type, name, id, placeholder, control, className, classNameInput, errorMessage, ...rest }: props) => {
   // const handleType = () => {
   //   if (type === 'password') {
   //     return openEye ? 'text' : 'password'
   //   }
   //   return type
   // }
+
+  const { field } = useController({
+    control,
+    name: name || "",
+    defaultValue: "",
+
+  });
+
   return (
     <div className={`relative ${className}`}>
       <input className={`form-control ${classNameInput}`} id={id}
-        name={name} placeholder={placeholder} type={type} value={value}
-        onChange={onChange} />
+        placeholder={placeholder} type={type} 
+        {...rest} {...field}/>
       {errorMessage ? <span className="text-danger">{errorMessage}</span> : null}
     </div>
   )

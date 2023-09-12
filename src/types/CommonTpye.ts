@@ -29,7 +29,11 @@ export type ResponseMessageType = {
    error?: string
    path?: 'email' | 'password'
 }
-
+export type UploadImageType = {
+   url?: string
+   asset_id?: string
+   public_id?: string
+ }
 
 export interface MenuDataType {
    menu_aside: MenuItem[];

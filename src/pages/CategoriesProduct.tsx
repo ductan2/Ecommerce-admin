@@ -5,6 +5,7 @@ import { useSelector } from "react-redux"
 
 import { Loading } from "../components/loading/Loading"
 import { formatDate } from "../utils/util"
+import { Heading } from "../components/heading/Heading"
 
 export const CategoriesProduct = () => {
 
@@ -13,21 +14,13 @@ export const CategoriesProduct = () => {
     useEffect(() => {
         dispatch(getAllCategoryProduct())
     }, [dispatch])
-    const { data, isLoading } = useSelector((state:RootState) => state.categoryProduct)
+    const { data, isLoading } = useSelector((state: RootState) => state.categoryProduct)
     if (isLoading) return <Loading isFull />
 
     return (
         <>
             <section className="content-main">
-                <div className="content-header">
-                    <div>
-                        <h2 className="content-title card-title">Categories</h2>
-                        <p>Add, edit or delete a category</p>
-                    </div>
-                    <div>
-                        <input type="text" placeholder="Search Categories" className="form-control bg-white" />
-                    </div>
-                </div>
+                <Heading title='Categories Product' slogan='Add, edit or delete a category' isSearch placeholder='Search Categories' />
                 <div className="card">
                     <div className="card-body">
                         <div className="row">

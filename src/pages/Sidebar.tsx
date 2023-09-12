@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MenuSideBar } from "../components/menu/MenuSideBar";
 import { MenuItem } from "../types/CommonTpye";
 import { menuData } from "../config/product";
@@ -10,6 +10,9 @@ type props = {
 }
 export const Sidebar = ({ toggleSidebar, isSidebarVisible }: props) => {
 
+   const slug = useLocation().pathname;
+   const match = slug.match(/\/admin\/([^/]+)/);
+   console.log("🚀 ~ file: Sidebar.tsx:15 ~ Sidebar ~ match:", match)
 
    return (
       <>
@@ -31,7 +34,7 @@ export const Sidebar = ({ toggleSidebar, isSidebarVisible }: props) => {
                {
                   menuData.menu_aside.map((item: MenuItem, index: number) => {
                      return (
-                        <MenuSideBar key={index} item={item} />
+                        <MenuSideBar mainUrl={match ? match![1] : null} key={index} item={item} />
                      )
                   })
                }

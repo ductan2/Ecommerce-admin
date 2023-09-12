@@ -11,7 +11,9 @@ import { CategoriesProduct } from "./pages/CategoriesProduct"
 import { Customer } from "./pages/Customer"
 import { BlogCategory } from "./pages/BlogCategory"
 import { Colors } from "./pages/Colors"
-import { Brands } from "./pages/ProductAdd/Brands"
+import { Brands } from "./pages/Product/Brands"
+import { Orders } from "./pages/Product/Orders"
+import { Upload } from "./components/upload/Upload"
 
 
 function App() {
@@ -24,13 +26,15 @@ function App() {
           <Route path="/admin/forgot-password" element={<Forgotpassword />} />
           <Route path="/admin" element={<Layout />}>
             <Route index element={<Dashboard />} />
-            <Route path="/admin/products" element={<Products />} />
+            <Route path="/admin/products/list" element={<Products />} />
             <Route path="/admin/customer" element={<Customer />} />
-            <Route path="/admin/product-category" element={<CategoriesProduct />} />
+            <Route path="/admin/products/category" element={<CategoriesProduct />} />
             <Route path="/admin/blogs/category" element={<BlogCategory />} />
-            <Route path="/admin/color-product" element={<Colors />} />
+            {/* { "href": "/admin/products/color */}
+            <Route path="/admin/products/color" element={<Colors />} />
             <Route path="/admin/brands" element={<Brands />} />
-
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/uploads" element={<Upload />} />
           </Route>
 
           <Route path="*" element={<ErrorPage />} />

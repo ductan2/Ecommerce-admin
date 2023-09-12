@@ -34,6 +34,7 @@ export const Layout = () => {
   if (user.email === undefined) {
     return <Navigate to="/admin/login" />
   }
+  
   return (
     <>
 

@@ -1,6 +1,6 @@
 import axios, { type AxiosError, AxiosInstance } from "axios"
-import { toast } from "react-toastify";
 import { backend_url } from "./dir";
+import swal from "sweetalert2";
 
 
 class Http {
@@ -24,10 +24,21 @@ class Http {
                console.log(error.response?.status)
                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                const data = error.response?.data as object | null | any
-               const message = data.message || error.message
-               toast.error(message, {
-                  position: toast.POSITION.TOP_CENTER
-                });
+               if (data[0].message) {
+                  swal({
+                     title: 'Errors!',
+                     text: data[0].message || "Server error",
+                     type: 'error',
+                  })
+               }
+               if (data === undefined) {
+                  swal({
+                     title: 'Errors!',
+                     text: data.message || "Server error",
+                     type: 'error',
+                  })
+               }
+             
             }
             return Promise.reject(error);
          }

@@ -11,7 +11,6 @@ export const menuData: MenuDataType =
                "text": "Dashboard"
             }
          },
-
       },
       {
          menu_item: {
@@ -21,9 +20,9 @@ export const menuData: MenuDataType =
             },
             "submenu": {
                "links": [
-                  { "href": "/admin/products", "text": "Product list" },
-                  { "href": "/admin/product-category", "text": "Categories Product" },
-                  { "href": "/admin/color-product", "text": "Colors" }
+                  { "href": "/admin/products/list", "text": "Product list" },
+                  { "href": "/admin/products/category", "text": "Categories Product" },
+                  { "href": "/admin/products/color", "text": "Colors" }
                ]
             }
          },
@@ -37,7 +36,7 @@ export const menuData: MenuDataType =
             },
             "submenu": {
                "links": [
-                  { "href": "page-orders-1.html", "text": "Order list 1" },
+                  { "href": "/admin/orders", "text": "Order list" },
                   { "href": "page-orders-2.html", "text": "Order list 2" },
                   { "href": "page-orders-detail.html", "text": "Order detail" }
                ]

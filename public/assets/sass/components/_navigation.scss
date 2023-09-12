@@ -144,3 +144,12 @@
 	color: $brand;
 	background-color:$primary-light;
 }
+.overlay-toggle{
+	position: fixed; /* Đảm bảo rằng overlay sẽ trải rộng trên toàn màn hình */
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: 999; /* Đảm bảo rằng overlay nằm trên tất cả các phần tử khác */
+   pointer-events: auto;
+}

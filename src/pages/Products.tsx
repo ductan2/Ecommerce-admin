@@ -5,6 +5,7 @@ import { useEffect } from "react"
 import { getproducts } from "../features/product/productSlice"
 import { useAppDispatch } from "../store/store"
 import { Loading } from "../components/loading/Loading"
+import { Heading } from "../components/heading/Heading"
 
 export const Products = () => {
   const dispatch = useAppDispatch()
@@ -13,15 +14,11 @@ export const Products = () => {
   }, [dispatch])
 
   const { data, isLoading } = useSelector((state: { products: AsyncState<Product> }) => state.products)
-  if (isLoading) return <Loading color="green" isFull />
+  if (isLoading) return <Loading isFull />
   return (
     <>
       <section className="content-main">
-        <div className="content-header">
-          <div>
-            <h2 className="content-title card-title">Products list</h2>
-          </div>
-        </div>
+        <Heading title="Product List"/>
         <div className="card mb-4">
           <header className="card-header">
             <div className="row gx-3">

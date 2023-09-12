@@ -188,3 +188,17 @@ textarea.form-control {
 	margin-bottom: 0;
 	min-height: unset;
 }
+.form-wrapper-modal{
+	position: relative;
+	.modal-close-icon{
+		position: absolute;
+		top: 0;
+		right: 0;
+		font-size: 2rem;
+		cursor: pointer;
+	}
+}
+.ReactModal__Content.ReactModal__Content--after-open{
+	width: 500px;
+
+}
