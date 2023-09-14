@@ -14,6 +14,7 @@ import { Colors } from "./pages/Colors"
 import { Brands } from "./pages/Product/Brands"
 import { Orders } from "./pages/Product/Orders"
 import { Upload } from "./components/upload/Upload"
+import { AddProduct } from "./pages/Product/AddProduct"
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/admin/customer" element={<Customer />} />
             <Route path="/admin/products/category" element={<CategoriesProduct />} />
             <Route path="/admin/blogs/category" element={<BlogCategory />} />
+            <Route path="/admin/products/add" element={<AddProduct />} />
             {/* { "href": "/admin/products/color */}
             <Route path="/admin/products/color" element={<Colors />} />
             <Route path="/admin/brands" element={<Brands />} />

@@ -23,7 +23,7 @@ export const Colors = () => {
    useEffect(() => {
       dispatch(getColors())
    }, [dispatch])
-   const { handleSubmit, control } = useForm<Color>({
+   const { handleSubmit, control,reset } = useForm<Color>({
       mode: "onChange",
       resolver: yupResolver(schemaWithTitle("color")),
       defaultValues: {
@@ -33,7 +33,6 @@ export const Colors = () => {
    const { data, isLoading } = useSelector((state: RootState) => state.colors)
 
    const onSubmit = handleSubmit((data) => {
-
       try {
          // console.log(data.title)
          dispatch(createColor(data.title))
@@ -81,7 +80,7 @@ export const Colors = () => {
       }
    })
 
-
+   
 
    useEffect(() => {
       setColors(data)
@@ -104,7 +103,7 @@ export const Colors = () => {
                         <form onSubmit={onSubmit}>
                            <div className="mb-4">
                               <label htmlFor="product_name" className="form-label">Name</label>
-                              <Input control={control} type="text" placeholder="Color" name="title" id="product_name" />
+                              <Input control={control} type="text" placeholder="Color" name="title" />
                            </div>
                            <div className="d-grid">
                               <Button className="btn btn-primary">
@@ -145,7 +144,7 @@ export const Colors = () => {
                                        <td>{formatDate(item.created_at as string)}</td>
                                        <td>{formatDate(item.updated_at as string)}</td>
 
-                                       <ActionDetails _id={item._id} handleDelete={handleDelete} setIsOpen={setIsOpen} />
+                                       <ActionDetails  _id={item._id} handleDelete={handleDelete} setIsOpen={setIsOpen} />
                                        <ModalCustomTitle control={control}
                                           functionSubmit={handleUpdateColor(item._id as string)}
                                           title="Update color" name="title"

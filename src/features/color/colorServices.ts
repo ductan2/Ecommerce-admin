@@ -1,5 +1,6 @@
 
-import { UserLocal } from "../../utils/dir";
+
+import {  auth } from "../../utils/auth";
 import http from "../../utils/http";
 
 
@@ -7,14 +8,14 @@ export const getColorsServices = async () => {
    return http.get('/colors/get-all')
 }
 export const createColorServices = async (data: { title: string }) => {
-   return http.post('/colors', { title: data.title }, { withCredentials: true, headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${UserLocal.token}` } })
+   return http.post('/colors', { title: data.title }, auth)
 }
 export const deleteColorServices = async (id: string) => {
-   return http.delete(`/colors/${id}`, { withCredentials: true, headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${UserLocal.token}` } })
+   return http.delete(`/colors/${id}`,auth )
 
 }
 export const updateColorServices = async (id: string, title: string) => {
-   return http.put(`/colors/${id}`, { title: title }, { withCredentials: true, headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${UserLocal.token}` } })
+   return http.put(`/colors/${id}`, { title: title },auth )
 }
 const colorServices = {
    getColorsServices,

@@ -1,11 +1,11 @@
 
-import { UserLocal } from "../../utils/dir";
+import { auth } from "../../utils/auth";
 import http from "../../utils/http";
 
 
 export const getOrders= async () => {
    
-   return http.get('/products/get-all-orders',{ withCredentials: true, headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${UserLocal.token}` } })
+   return http.get('/products/get-all-orders',auth)
 }
 
 

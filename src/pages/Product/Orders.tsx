@@ -17,8 +17,7 @@ export const Orders = () => {
    const { data, isLoading } = useSelector((state: RootState) => state.orders)
    if (isLoading) return <Loading isFull />
 
-   console.log("🚀 ~ file: Brands.tsx:16 ~ Brands ~ data:", data)
-
+   console.log(data)
 
    return (
       <section className="content-main">
@@ -66,9 +65,9 @@ export const Orders = () => {
                         {data.map((item) => (
                            <tr key={item._id}>
                               <td style={{ width: "200px" }}>{item._id}</td>
-                              <td><b>{item.products_data[0].title}</b></td>
+                              <td><b>{item.products_data[0]?.title}</b></td>
                               <td>{item.orderby}</td>
-                              <td>{item.products[0].count}</td>
+                              <td>{item.products[0]?.count}</td>
                               <td>${item.payment_intent.amount}</td>
                               <td><span className="badge rounded-pill alert-warning">{item.payment_intent.status}</span></td>
                               <td>{formatDate(item.updated_at)}</td>

@@ -22,7 +22,8 @@ export const menuData: MenuDataType =
                "links": [
                   { "href": "/admin/products/list", "text": "Product list" },
                   { "href": "/admin/products/category", "text": "Categories Product" },
-                  { "href": "/admin/products/color", "text": "Colors" }
+                  { "href": "/admin/products/color", "text": "Colors" },
+                  { "href": "/admin/products/add", "text": "Add products" }
                ]
             }
          },
