@@ -12,6 +12,7 @@ const initialState: AsyncState<CategoryProduct> = {
    isLoading: false,
    isSuccess: false,
    message: "",
+   dataUpdate: undefined,
 }
 
 export const getAllCategoryProduct = createAsyncThunk<CategoryProduct[]>("category-product/get-all", async () => {
@@ -43,14 +44,20 @@ export const deleteCategoryProduct = createAsyncThunk<CategoryProduct, string>("
 export const updateCategoryProduct = createAsyncThunk<CategoryProduct, { id: string, title: string }>("color/delete", async (data, thunkAPI) => {
    try {
       const response = await categoryProcServices.updateCategoryProductService(data.id, { title: data.title });
-      console.log(response);
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
    }
 })
 
-
+export const getCategoryProductById = createAsyncThunk<CategoryProduct, string>("color/get-by-id", async (id, thunkAPI) => {
+   try {
+      const response = await categoryProcServices.getCategoryProductByIdService(id);
+      return response.data;
+   } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+   }
+})
 export const customerSlice = createSlice({
    name: 'category-product',
    initialState,
@@ -98,6 +105,22 @@ export const customerSlice = createSlice({
             state.data = state.data.filter((color) => color._id !== action.payload._id);
          })
          .addCase(deleteCategoryProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error as string;
+         })
+         .addCase(getCategoryProductById.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getCategoryProductById.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.dataUpdate = action.payload;
+         })
+         .addCase(getCategoryProductById.rejected, (state, action) => {
+            console.log("Action error", action.error)
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

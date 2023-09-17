@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { RootState, useAppDispatch } from "../store/store"
-import { createCategoryProduct, deleteCategoryProduct, getAllCategoryProduct, updateCategoryProduct } from "../features/categoryProduct/categoryProcSlice"
+import { createCategoryProduct, deleteCategoryProduct, getAllCategoryProduct, getCategoryProductById, updateCategoryProduct } from "../features/categoryProduct/categoryProcSlice"
 import { useSelector } from "react-redux"
 
 import { Loading } from "../components/loading/Loading"
@@ -12,28 +12,27 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { schemaWithTitle } from "../utils/validation"
 import { useForm } from "react-hook-form"
 import { CategoryProduct } from "../types/apiType/categoryProc.type"
-import { Input } from "../components/input/Input"
 import { ModalCustomTitle } from "../components/modal/ModalCustomTitle"
+import { InputCustom } from "../components/input/InputCustom"
 
 export const CategoriesProduct = () => {
     const [modalIsOpen, setIsOpen] = useState<boolean>(false);
     const [isItem, setIsItem] = useState<string>("")
     const dispatch = useAppDispatch()
-    console.log("🚀 ~ file: CategoriesProduct.tsx:21 ~ CategoriesProduct ~ isItem:", isItem)
 
     useEffect(() => {
         dispatch(getAllCategoryProduct())
     }, [dispatch])
-    const { handleSubmit, control } = useForm<CategoryProduct>({
+    const { handleSubmit, control, reset } = useForm<CategoryProduct>({
         mode: "onChange",
         resolver: yupResolver(schemaWithTitle("Category product")),
         defaultValues: {
             title: ""
         }
     });
-    
-    const { data, isLoading } = useSelector((state: RootState) => state.categoryProduct)
-    if (isLoading) return <Loading isFull />
+
+    const { data, isLoading, dataUpdate } = useSelector((state: RootState) => state.categoryProduct)
+
     const onSubmit = handleSubmit((data) => {
         try {
             dispatch(createCategoryProduct(data.title))
@@ -63,6 +62,16 @@ export const CategoriesProduct = () => {
             console.log(error)
         }
     }
+    const handleEdit = async (id: string) => {
+        setIsOpen(true)
+        await dispatch(getCategoryProductById(id))
+        setIsItem(id)
+    }
+    useEffect(() => {
+        if (dataUpdate) {
+            reset(dataUpdate)
+        }
+    }, [reset, dataUpdate])
 
     const handleUpdateCateProc = (id: string) => handleSubmit((data) => {
         try {
@@ -79,7 +88,7 @@ export const CategoriesProduct = () => {
             console.log(error)
         }
     })
-
+    if (isLoading) return <Loading isFull />
     return (
         <>
             <section className="content-main">
@@ -89,10 +98,7 @@ export const CategoriesProduct = () => {
                         <div className="row">
                             <div className="col-md-3">
                                 <form onSubmit={onSubmit}>
-                                    <div className="mb-4">
-                                        <label htmlFor="product_name" className="form-label">Name</label>
-                                        <Input control={control} type="text" placeholder="Category product" name="title" classNameInput="form-control" />
-                                    </div>
+                                    <InputCustom label="Category product" control={control} type="text" placeholder="Category product" name="title" />
                                     <div className="d-grid">
                                         <button className="btn btn-primary">Create category</button>
                                     </div>
@@ -127,7 +133,7 @@ export const CategoriesProduct = () => {
                                                     <td><b>{item.title}</b></td>
                                                     <td>{formatDate(item.created_at!)}</td>
                                                     <td>{formatDate(item.updated_at!)}</td>
-                                                    <ActionDetails handleDelete={handleDelete} setIsItem={setIsItem} _id={item._id} setIsOpen={setIsOpen} />
+                                                    <ActionDetails handleDelete={handleDelete} _id={item._id} handleEdit={() => handleEdit(item._id as string)} />
                                                 </tr>
                                             ))}
                                             <ModalCustomTitle control={control}

@@ -49,6 +49,7 @@ export type AsyncState<T> = {
    isLoading?: boolean;
    isSuccess?: boolean;
    message?: string
+   dataUpdate?: T
 };
 // export interface AsyncThunkConfig {
 //    state: RootState; // Replace 'RootState' with your actual RootState type

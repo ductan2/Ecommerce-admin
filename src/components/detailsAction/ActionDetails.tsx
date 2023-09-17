@@ -1,26 +1,21 @@
-import React, { RefObject, useState } from 'react'
+import  { RefObject, useState } from 'react'
 import useClickOutside from '../../hooks/useClickOutSide'
 
 
 type Props = {
    _id?: string
    handleDelete: (id: string) => void
-   // handleEdit?: (id: string) => void
-   setIsOpen: (value: boolean) => void
-   setIsItem?: (value: string) => void
+   handleEdit?: () => void
 }
 
-export const ActionDetails = ({ _id, handleDelete, setIsOpen, setIsItem }: Props) => {
+export const ActionDetails = ({ _id, handleDelete,handleEdit }: Props) => {
    const [toggle, setToggle] = useState<boolean>(false)
    const handleSetToggle = () => setToggle(!toggle)
 
    const domNode: RefObject<HTMLDivElement> = useClickOutside(() => {
       setToggle(false);
    });
-   const handleEdit = () => {
-      setIsOpen(true)
-      setIsItem!(_id as string)
-   }
+
    return (
       <td className="text-end" onClick={handleSetToggle} style={{ width: "100px" }}>
          <div ref={domNode} className="dropdown">

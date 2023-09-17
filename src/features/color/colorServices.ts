@@ -17,11 +17,15 @@ export const deleteColorServices = async (id: string) => {
 export const updateColorServices = async (id: string, title: string) => {
    return http.put(`/colors/${id}`, { title: title },auth )
 }
+export const getColorByIdServices = async (id: string) => {
+   return http.get(`/colors/${id}`)
+}
 const colorServices = {
    getColorsServices,
    createColorServices,
    deleteColorServices,
-   updateColorServices
+   updateColorServices,
+   getColorByIdServices
 
 }
 export default colorServices;

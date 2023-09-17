@@ -12,6 +12,7 @@ const initialState: AsyncState<Color> = {
    isLoading: false,
    isSuccess: false,
    message: "",
+   dataUpdate: undefined,
 }
 
 export const getColors = createAsyncThunk<Color[]>("color/get-all", async () => {
@@ -25,7 +26,6 @@ export const getColors = createAsyncThunk<Color[]>("color/get-all", async () => 
 
 export const createColor = createAsyncThunk<Color, string>("color/create", async (title, thunkAPI) => {
    try {
-      console.log(title)
       const response = await colorServices.createColorServices({ title });
       console.log(response)
       return response.data;
@@ -52,6 +52,17 @@ export const updateColor = createAsyncThunk<Color, { id: string, title: string }
       return thunkAPI.rejectWithValue(error);
    }
 })
+
+export const getColorById = createAsyncThunk<Color, string>("color/get-by-id", async (id, thunkAPI) => {
+   try {
+      const response = await colorServices.getColorByIdServices(id);
+      console.log("response",response.data);
+      return response.data.result;
+   } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+   }
+})
+
 export const customerSlice = createSlice({
    name: 'color',
    initialState,
@@ -105,7 +116,22 @@ export const customerSlice = createSlice({
             state.isSuccess = false;
             state.message = action.error as string;
          })
-         
+         .addCase(getColorById.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getColorById.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.dataUpdate = action.payload;
+         })
+         .addCase(getColorById.rejected, (state, action) => {
+            console.log("Action error",action.error)
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error as string;
+         })
    }
 })
 

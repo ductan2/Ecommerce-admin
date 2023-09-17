@@ -7,7 +7,7 @@ import { Forgotpassword } from "./components/login/Forgotpassword"
 import { Dashboard } from "./pages/Dashboard"
 import { Products } from "./pages/Products"
 import { ErrorPage } from "./pages/ErrorPage"
-import { CategoriesProduct } from "./pages/CategoriesProduct"
+
 import { Customer } from "./pages/Customer"
 import { BlogCategory } from "./pages/BlogCategory"
 import { Colors } from "./pages/Colors"
@@ -15,6 +15,7 @@ import { Brands } from "./pages/Product/Brands"
 import { Orders } from "./pages/Product/Orders"
 import { Upload } from "./components/upload/Upload"
 import { AddProduct } from "./pages/Product/AddProduct"
+import { CategoriesProduct } from "./pages/CategoriesProduct"
 
 
 function App() {

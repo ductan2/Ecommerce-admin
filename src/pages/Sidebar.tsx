@@ -12,7 +12,6 @@ export const Sidebar = ({ toggleSidebar, isSidebarVisible }: props) => {
 
    const slug = useLocation().pathname;
    const match = slug.match(/\/admin\/([^/]+)/);
-   console.log("🚀 ~ file: Sidebar.tsx:15 ~ Sidebar ~ match:", match)
 
    return (
       <>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { createColor, deleteColor, getColors, updateColor } from "../features/color/colorSlice"
+import { createColor, deleteColor, getColorById, getColors, updateColor } from "../features/color/colorSlice"
 import { Loading } from "../components/loading/Loading"
 import { RootState, useAppDispatch } from "../store/store"
 import { formatDate } from "../utils/util"
@@ -10,27 +10,28 @@ import Swal from 'sweetalert2'
 import { ActionDetails } from "../components/detailsAction/ActionDetails"
 import { useForm } from "react-hook-form";
 import { Color } from "../types/apiType/color.type"
-import { Input } from "../components/input/Input"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schemaWithTitle } from "../utils/validation"
 import { ModalCustomTitle } from "../components/modal/ModalCustomTitle"
+import { InputCustom } from "../components/input/InputCustom"
 
 export const Colors = () => {
 
    const dispatch = useAppDispatch()
    const [colors, setColors] = useState<Color[]>([])
+   const [isItem, setIsItem] = useState<string>("")
    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
    useEffect(() => {
       dispatch(getColors())
    }, [dispatch])
-   const { handleSubmit, control,reset } = useForm<Color>({
+   const { handleSubmit, control, reset } = useForm<Color>({
       mode: "onChange",
       resolver: yupResolver(schemaWithTitle("color")),
       defaultValues: {
          title: ""
       }
    });
-   const { data, isLoading } = useSelector((state: RootState) => state.colors)
+   const { data, isLoading, dataUpdate } = useSelector((state: RootState) => state.colors)
 
    const onSubmit = handleSubmit((data) => {
       try {
@@ -80,15 +81,28 @@ export const Colors = () => {
       }
    })
 
-   
-
+   // useEffect(() => {
+   //    async function resetForm() {
+   //       await reset(dataUpdate); // Đợi cho reset hoàn tất trước khi truy cập form
+   //    }
+   //    resetForm();
+   // }, [isItem, reset]);
    useEffect(() => {
       setColors(data)
    }, [data])
+   const handleEdit = async (id: string) => {
+      setIsItem(id);
+      await dispatch(getColorById(id)); // Chờ cho dữ liệu được tải xong
+      setIsOpen(true);
+   }
+   useEffect(() => {
+      if (dataUpdate) {
+         reset(dataUpdate); // Reset dữ liệu form khi dataUpdate thay đổi
+      }
+   }, [dataUpdate, reset]);
+
 
    if (isLoading) return <Loading isFull />
-
-
    return (
 
       <>
@@ -101,10 +115,7 @@ export const Colors = () => {
                   <div className="row">
                      <div className="col-md-3">
                         <form onSubmit={onSubmit}>
-                           <div className="mb-4">
-                              <label htmlFor="product_name" className="form-label">Name</label>
-                              <Input control={control} type="text" placeholder="Color" name="title" />
-                           </div>
+                           <InputCustom label="Color" control={control} type="text" placeholder="Color" name="title"/>
                            <div className="d-grid">
                               <Button className="btn btn-primary">
                                  Create color
@@ -144,12 +155,7 @@ export const Colors = () => {
                                        <td>{formatDate(item.created_at as string)}</td>
                                        <td>{formatDate(item.updated_at as string)}</td>
 
-                                       <ActionDetails  _id={item._id} handleDelete={handleDelete} setIsOpen={setIsOpen} />
-                                       <ModalCustomTitle control={control}
-                                          functionSubmit={handleUpdateColor(item._id as string)}
-                                          title="Update color" name="title"
-                                          modalIsOpen={modalIsOpen}
-                                          setIsOpen={setIsOpen} placeholder="Colors"/>
+                                       <ActionDetails _id={item._id} handleDelete={handleDelete} handleEdit={() => handleEdit(item._id as string)} />
                                     </tr>
                                  ))}
                               </tbody>
@@ -160,7 +166,11 @@ export const Colors = () => {
                </div>
             </div>
          </section>
-
+         <ModalCustomTitle control={control}
+            functionSubmit={handleUpdateColor(isItem)}
+            title="Update color" name="title"
+            modalIsOpen={modalIsOpen}
+            setIsOpen={setIsOpen} placeholder="Colors" />
       </>
 
    )

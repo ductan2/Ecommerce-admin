@@ -1,9 +1,10 @@
-type image = {
-   url: string;
-   asset_id: string;
-   public_id: string;
-}
+import { UploadImageType } from "../CommonTpye";
 
+interface ratings {
+   start: number;
+   comment: string;
+   product_id: string; // id user comment
+}
 export interface Product {
    _id?: string;
    title: string;
@@ -11,13 +12,15 @@ export interface Product {
    description: string;
    price: number;
    brand: string;
-   category: string[];
    quantity: number;
-   images: image[];
-   sold?: number;
-   color: string[];
-   rating_distribution?: number;
-   ratings?: number[];
-   created_at: string;
-   updated_at: string;
+   category?: string[];
+   sold: number;
+   images?: UploadImageType[];
+   trending: boolean
+   featured: boolean
+   color?: string[];
+   rating_distribution: number;
+   ratings?: ratings[];
+   created_at?: string;
+   updated_at?: string;
 }

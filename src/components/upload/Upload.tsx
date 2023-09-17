@@ -1,19 +1,28 @@
-import { useForm } from "react-hook-form";
-import { InputProduct } from "../input/InputProduct";
+
+import { Checkbox, ConfigProvider, Radio } from 'antd';
+
 export const Upload = () => {
 
-   const { handleSubmit, control } = useForm({
-      defaultValues: {
-         title: "batman"
-      }
-   });
+   // const { handleSubmit, control } = useForm({
+   //    defaultValues: {
+   //       title: "batman"
+   //    }
+   // });
 
    return (
       <>
-         <form action="">
-            <InputProduct label="title" placeholder="title" type="text" />
-         </form >
-         { }
+         <ConfigProvider
+            theme={{
+               components: {
+                  Radio: {
+                     colorPrimary: '#00b96b',
+                  },
+               },
+            }}
+         >
+            <Radio >Radio</Radio>
+            <Radio>Checkbox</Radio>
+         </ConfigProvider>
       </>
    )
 }

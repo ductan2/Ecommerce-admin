@@ -20,6 +20,10 @@ INCLUDE STYLES AND COMPONENTS
 option {
   padding: 3px 5px; }
 
+.right-flex {
+  display: flex;
+  justify-content: right; }
+
 /*RESET*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -3182,7 +3186,8 @@ body.dark {
 
 .table-responsive {
   overflow-y: auto;
-  min-height: 500px; }
+  min-height: 500px;
+  padding-bottom: 50px; }
 
 @media (max-width: 992px) {
   /* small tablet devices */

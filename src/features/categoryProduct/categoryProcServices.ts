@@ -15,11 +15,14 @@ export const updateCategoryProductService = async (id: string, data: { title: st
 export const deleteCategoryProductService = async (id: string) => {
    return http.delete(`/procduct-categorys/${id}`, auth)
 }
-
+export const getCategoryProductByIdService = async (id: string) => {
+   return http.get(`/procduct-categorys/${id}`)
+}
 const CategoryProductServices = {
    getCategoryProductService,
    createCategoryProductService,
    updateCategoryProductService,
-   deleteCategoryProductService
+   deleteCategoryProductService,
+   getCategoryProductByIdService
 }
 export default CategoryProductServices;

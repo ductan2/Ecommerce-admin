@@ -13,21 +13,16 @@ export const schemaBrand = yup.object().shape({
    title: yup.string().required("Brand name is required").max(50, "Name is too long"),
 });
 
-export const shemaProduct = yup.object().shape({
+export const productSchema = yup.object().shape({
    title: yup.string().required("Title is Required"),
    description: yup.string().required("Description is Required"),
+  
    price: yup.number().required("Price is Required"),
-   brand: yup.string().required("Brand is Required"),
-   category: yup
-      .array()
-      .min(1, "Pick at least one category")
-      .required("Category is Required"),
-   tags: yup.string().required("Tag is Required"),
-   images: yup.array().min(1, "Pick at least one image").required("Image is Required"),
-   color: yup
-      .array()
-      .min(1, "Pick at least one color")
-      .required("Color is Required"),
    quantity: yup.number().required("Quantity is Required"),
+   brand: yup.string().required("Brand is Required").defined(),
+   sold: yup.number().default(0), 
+   trending: yup.boolean().default(false), 
+   featured: yup.boolean().default(false), 
+   rating_distribution: yup.number().default(5),
 });
 

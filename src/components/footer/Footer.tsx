@@ -2,7 +2,7 @@
 export const Footer = () => {
    return (
       <footer className="main-footer font-xs">
-         <div className="row pb-30 pt-15">
+         <div className="row pt-15">
             <div className="col-sm-6">
                {
                   (new Date().getFullYear())
