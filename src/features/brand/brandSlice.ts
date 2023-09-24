@@ -12,11 +12,20 @@ const initialState: AsyncState<Brand> = {
    isLoading: false,
    isSuccess: false,
    message: "",
+   dataUpdate: undefined
 }
 
 export const getAllBrand = createAsyncThunk<Brand[]>("brands/get-all", async () => {
    try {
       const response = await brandServices.getBrandsServices();
+      return response.data.result;
+   } catch (error) {
+      return error
+   }
+})
+export const getABrand = createAsyncThunk<Brand, string>("brands/get-a-brand", async (id: string) => {
+   try {
+      const response = await brandServices.getABrandServices(id);
       return response.data.result;
    } catch (error) {
       return error
@@ -30,7 +39,7 @@ export const createBrand = createAsyncThunk<Brand, { title: string, images: Uplo
       return thunkAPI.rejectWithValue(error);
    }
 })
-export const updateBrand = createAsyncThunk<Brand, {id:string,title:string,images:UploadImageType | string}>("brands/update", async (data, thunkAPI) => {
+export const updateBrand = createAsyncThunk<Brand, { id: string, title: string, images: UploadImageType | string }>("brands/update", async (data, thunkAPI) => {
    try {
       const response = await brandServices.editBrandServices(data);
       return response.data;
@@ -104,22 +113,37 @@ export const customerSlice = createSlice({
          })
          .addCase(updateBrand.pending, (state) => {
             state.isLoading = true;
-          })
-          .addCase(updateBrand.fulfilled, (state, action) => {
+         })
+         .addCase(updateBrand.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
             const index = state.data.findIndex((brand) => brand._id === action.payload._id);
-            if(index !== -1){
+            if (index !== -1) {
                state.data[index] = action.payload;
             }
-          })
-          .addCase(updateBrand.rejected, (state, action) => {
+         })
+         .addCase(updateBrand.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
             state.message = action.error as string;
-          })
+         }).addCase(getABrand.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getABrand.fulfilled, (state, action) => {
+            const data = action.payload;
+            state.isLoading = false;
+            state.isError = false
+            state.isSuccess = true;
+            state.dataUpdate = data;
+         })
+         .addCase(getABrand.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true
+            state.isSuccess = false;
+            state.message = action.error as string;
+         })
    }
 })
 

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import logo from "../../../public/assets/imgs/theme/logo.svg"
+
 import { Search } from "../search/Search"
 
 type props = {
@@ -27,7 +27,7 @@ export const Header = ({ isLogo, toggleSidebar }: props) => {
         isLogo ? (
           <div className="col-brand">
             <Link to="/admin" className="brand-wrap">
-              <img src={logo} className="logo" alt="Nest Dashboard" />
+              <img src="/assets/imgs/brands/vendor-2.png" className="logo" alt="Nest Dashboard" />
             </Link>
           </div>
         ) : (
@@ -38,9 +38,6 @@ export const Header = ({ isLogo, toggleSidebar }: props) => {
           </div>
         )
       }
-
-
-
 
 
       <div className="col-nav">
@@ -63,7 +60,7 @@ export const Header = ({ isLogo, toggleSidebar }: props) => {
 
           <li className="dropdown nav-item">
             <a className="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">
-              <img className="img-xs rounded-circle" src="assets/imgs/people/avatar-2.png" alt="User" /></a>
+              <img className="img-xs rounded-circle" src="/assets/imgs/people/avatar-2.png" alt="User" /></a>
             <div className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
               <a className="dropdown-item" href="#"><i className="material-icons md-perm_identity"></i>Edit Profile</a>
               <a className="dropdown-item" href="#"><i className="material-icons md-settings"></i>Account Settings</a>

@@ -17,7 +17,7 @@ export const Sidebar = ({ toggleSidebar, isSidebarVisible }: props) => {
       <>
          <div className="aside-top" >
             <Link to="/admin" className="brand-wrap">
-               <img src="assets/imgs/theme/logo.svg" className="logo" alt="Nest Dashboard" />
+               <img src="/assets/imgs/theme/logo.svg" className="logo" alt="Nest Dashboard" />
             </Link>
             <div>
                {isSidebarVisible && (

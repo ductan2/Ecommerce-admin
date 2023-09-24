@@ -62,7 +62,7 @@ export const CategoriesProduct = () => {
             console.log(error)
         }
     }
-    const handleEdit = async (id: string) => {
+    const openModal = async (id: string) => {
         setIsOpen(true)
         await dispatch(getCategoryProductById(id))
         setIsItem(id)
@@ -133,7 +133,7 @@ export const CategoriesProduct = () => {
                                                     <td><b>{item.title}</b></td>
                                                     <td>{formatDate(item.created_at!)}</td>
                                                     <td>{formatDate(item.updated_at!)}</td>
-                                                    <ActionDetails handleDelete={handleDelete} _id={item._id} handleEdit={() => handleEdit(item._id as string)} />
+                                                    <ActionDetails handleDelete={handleDelete} _id={item._id} openModal={() => openModal(item._id as string)} />
                                                 </tr>
                                             ))}
                                             <ModalCustomTitle control={control}

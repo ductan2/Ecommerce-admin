@@ -24,6 +24,52 @@ option {
   display: flex;
   justify-content: right; }
 
+.font-bold {
+  font-weight: bold; }
+
+.rounded {
+  border-radius: 12px; }
+
+.overflow-hidden {
+  overflow: hidden; }
+
+.ql-container.ql-snow {
+  height: 120px !important; }
+
+.ant-select-selector {
+  background-color: #f4f5f9 !important;
+  border-radius: 4px !important;
+  color: #4f5d77;
+  border: 2px solid #f4f5f9 !important;
+  width: 100%;
+  height: 41px;
+  font-size: 13px; }
+
+.quill {
+  background-color: #f4f5f9 !important;
+  border-radius: 4px !important;
+  color: #4f5d77;
+  outline: none;
+  border: 2px solid #f4f5f9 !important; }
+  .quill .ql-container {
+    border: none !important; }
+  .quill .ql-toolbar {
+    border-top: 1px solid #f4f5f9 !important;
+    border-right: 1px solid #f4f5f9 !important;
+    border-left: 1px solid #f4f5f9 !important; }
+
+.image-upload {
+  width: 150px !important;
+  height: 170px !important; }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.ant-select-selector {
+  height: 100% !important; }
+
 /*RESET*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -983,7 +1029,8 @@ textarea.form-control {
   font-size: 85%; }
 
 .price {
-  font-weight: 600; }
+  font-weight: 600;
+  color: #30b383; }
 
 .notify {
   position: absolute;
@@ -1579,6 +1626,11 @@ a.itemside {
     font-size: 1.5rem;
     transform: translate(50%, -50%);
     color: red; }
+
+.interaction {
+  display: flex;
+  align-items: center;
+  gap: 20px; }
 
 /* --------- description list --------*/
 [class*="dlist"] {

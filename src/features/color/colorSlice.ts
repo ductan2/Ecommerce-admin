@@ -43,7 +43,7 @@ export const deleteColor = createAsyncThunk<Color, string>("color/delete", async
       return thunkAPI.rejectWithValue(error);
    }
 })
-export const updateColor = createAsyncThunk<Color, { id: string, title: string }>("color/delete", async (data, thunkAPI) => {
+export const updateColor = createAsyncThunk<Color, { id: string, title: string }>("color/update", async (data, thunkAPI) => {
    try {
       const response = await colorServices.updateColorServices(data.id, data.title);
       console.log(response);
@@ -56,7 +56,7 @@ export const updateColor = createAsyncThunk<Color, { id: string, title: string }
 export const getColorById = createAsyncThunk<Color, string>("color/get-by-id", async (id, thunkAPI) => {
    try {
       const response = await colorServices.getColorByIdServices(id);
-      console.log("response",response.data);
+      console.log("response", response.data);
       return response.data.result;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -126,7 +126,24 @@ export const customerSlice = createSlice({
             state.dataUpdate = action.payload;
          })
          .addCase(getColorById.rejected, (state, action) => {
-            console.log("Action error",action.error)
+            console.log("Action error", action.error)
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error as string;
+         }).addCase(updateColor.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(updateColor.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            const index = state.data.findIndex((color) => color._id === action.payload._id);
+            if (index !== -1) {
+               state.data[index] = action.payload;
+            }
+         })
+         .addCase(updateColor.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

@@ -7,37 +7,31 @@ import { Product } from '../../types/apiType/product.type';
 
 export interface AsyncStateWithPage<T> extends AsyncState<T> {
    itemPerPage: number;
-   totalItemPerPage: number
+   totalItem: number
    page?: number
 }
 
-
+const ITEMPERPAGE = 20;
 const initialState: AsyncStateWithPage<Product> = {
    data: [],
    isError: false,
    isLoading: false,
    isSuccess: false,
    message: "",
-   itemPerPage: 1,
-   totalItemPerPage: 1
+   itemPerPage: ITEMPERPAGE,
+   totalItem: 0,
 }
 
-export const getAllProduct = createAsyncThunk<Product[], { query?: string, page?: number,limit?:number }>("products/get-all-product", async ({ query, page ,limit=1}) => {
+export const getAllProduct = createAsyncThunk<{ data: Product[], total: number }, { query?: string, page?: number, limit?: number }>("products/get-all-product", async ({ query, page, limit = ITEMPERPAGE }) => {
    try {
-      const response = await productServices.getAllProductServices(query, page,limit);
+      const response = await productServices.getAllProductServices(query, page, limit);
+      console.log(response.data.result)
       return response.data.result;
    } catch (error) {
       return error
    }
 });
-export const getPageAndProduct = createAsyncThunk<{ total: number}>("products/get-page", async () => {
-   try {
-      const response = await productServices.getProductAndPageServices();
-      return response.data;
-   } catch (error) {
-      return error
-   }
-});
+
 export const createProduct = createAsyncThunk<Product, Product>("products/create", async (data, thunkAPI) => {
    try {
       const response = await productServices.createProductServices(data);
@@ -47,6 +41,30 @@ export const createProduct = createAsyncThunk<Product, Product>("products/create
    }
 });
 
+export const updateProduct = createAsyncThunk<Product, { data: Product, id: string }>("products/update", async ({ data, id }, thunkAPI) => {
+   try {
+      const response = await productServices.updateProductServices(data, id);
+      return response.data.result;
+   } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+   }
+})
+export const getProductById = createAsyncThunk<Product, string>("products/get-by-id", async (id, thunkAPI) => {
+   try {
+      const response = await productServices.getAProductServices(id);
+      return response.data.result;
+   } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+   }
+})
+export const deleteProduct = createAsyncThunk<Product, string>("products/delete", async (id, thunkAPI) => {
+   try {
+      const response = await productServices.deleteProductService(id);
+      return response.data;
+   } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+   }
+})
 export const productSlice = createSlice({
    name: 'products',
    initialState,
@@ -56,14 +74,17 @@ export const productSlice = createSlice({
          state.isLoading = true;
       })
          .addCase(getAllProduct.fulfilled, (state, action) => {
-            const data = action.payload;
+            const data = action.payload.data;
             state.isLoading = false;
             state.isError = false
             state.isSuccess = true;
+            
             if (Array.isArray(data)) {
                state.data = data;
             }
-
+            state.totalItem = action.payload.total;
+            console.log(state.totalItem)
+            state.page = Math.ceil(state.totalItem / state.itemPerPage);
          })
          .addCase(getAllProduct.rejected, (state, action) => {
             state.isLoading = false;
@@ -86,18 +107,33 @@ export const productSlice = createSlice({
             state.isSuccess = false;
             state.message = action.error as string;
          })
-         .addCase(getPageAndProduct.pending, (state) => {
+        .addCase(getProductById.pending, (state) => {
             state.isLoading = true;
          })
-         .addCase(getPageAndProduct.fulfilled, (state, action) => {
+         .addCase(getProductById.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.totalItemPerPage = action.payload.total;
-            state.page = state.totalItemPerPage / state.itemPerPage
-
+            state.dataUpdate = action.payload;
          })
-         .addCase(getPageAndProduct.rejected, (state, action) => {
+         .addCase(getProductById.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error as string;
+         }).addCase(updateProduct.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(updateProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            const index = state.data.findIndex((brand) => brand._id === action.payload._id);
+            if (index !== -1) {
+               state.data[index] = action.payload;
+            }
+         })
+         .addCase(updateProduct.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

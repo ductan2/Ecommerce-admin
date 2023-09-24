@@ -3,6 +3,7 @@ import App from './App.tsx'
 import "../public/assets/css/main.css"
 import './index.css'
 import 'sweetalert2/src/sweetalert2.scss'
+
 import { store } from "./store/store.ts"
 import { Provider } from "react-redux"
 import Modal from 'react-modal';

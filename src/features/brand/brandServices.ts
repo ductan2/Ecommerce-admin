@@ -9,6 +9,9 @@ export const getBrandsServices = async () => {
 export const createbrandServices = async (data: { title: string, images?: UploadImageType }) => {
    return http.post('/brands', { title: data.title, images: data.images })
 }
+export const getABrandServices=async(id:string)=>{
+   return http.get(`/brands/${id}`)
+}
 export const deleteBrandServices = async (id: string) => {
    return http.delete(`/brands/${id}`)
 }
@@ -19,6 +22,7 @@ const BrandsServices = {
    getBrandsServices,
    createbrandServices,
    deleteBrandServices,
-   editBrandServices
+   editBrandServices,
+   getABrandServices
 }
 export default BrandsServices;

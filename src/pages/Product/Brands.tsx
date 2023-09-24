@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { RootState, useAppDispatch } from "../../store/store"
 import { Loading } from "../../components/loading/Loading"
 import { useEffect, useState, Fragment } from "react"
-import { createBrand, deleteBrand, getAllBrand, updateBrand } from "../../features/brand/brandSlice"
+import { createBrand, deleteBrand, getABrand, getAllBrand, updateBrand } from "../../features/brand/brandSlice"
 import { Button } from "../../components/button/Button"
 import { ModalCustomTitle } from "../../components/modal/ModalCustomTitle"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -17,11 +17,11 @@ import { MdModeEditOutline, MdDelete } from 'react-icons/md'
 
 
 export const Brands = () => {
-   const [modalIsEdit, setIsEdit] = useState<boolean>(false);
    const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-   const [indexEdit, setIndexEdit] = useState<number>(0);
+
+   const [task, setTask] = useState("Create");
    const dispatch = useAppDispatch()
-   const { handleSubmit, control, formState: { errors } } = useForm<Brand>({
+   const { handleSubmit, control, reset, formState: { errors } } = useForm<Brand>({
       mode: "onChange",
       resolver: yupResolver(schemaBrand),
       defaultValues: {
@@ -33,7 +33,21 @@ export const Brands = () => {
    useEffect(() => {
       dispatch(getAllBrand())
    }, [dispatch])
-   const { data, isLoading } = useSelector((state: RootState) => state.brand)
+   const { data, isLoading, dataUpdate } = useSelector((state: RootState) => state.brand)
+   const openModal = async (id: string) => {
+      await dispatch(getABrand(id));
+      setTask("Edit");
+      setIsOpen(true);
+   }
+   const handleCreate = () => {
+      setTask("Create");
+      setIsOpen(true);
+   }
+   useEffect(() => {
+      if (dataUpdate) {
+         reset(dataUpdate); // Reset dữ liệu form khi dataUpdate thay đổi
+      }
+   }, [dataUpdate, reset]);
    const { data: dataUpload, isLoading: isLoadingImage } = useSelector((state: RootState) => state.upload)
    if (isLoading) return <Loading isFull />
    const onSubmit = handleSubmit((data) => {
@@ -53,7 +67,7 @@ export const Brands = () => {
          console.log("errors:", error)
       }
    })
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(uploadImage(e.target.files![0]))
    }
    const handleDelete = (id: string, id_image: string) => {
@@ -78,13 +92,14 @@ export const Brands = () => {
             text: "Brand has been edit.",
             type: 'success',
          }).then(() => {
-            setIsEdit(false)
+            setIsOpen(false)
             window.location.reload()
          })
       } catch (error) {
          console.log("errors:", error)
       }
    })
+
    return (
       <>
          <section className="content-main">
@@ -93,7 +108,7 @@ export const Brands = () => {
                   <h2 className="content-title card-title">Brand</h2>
                   <p>Brand and vendor management</p>
                </div>
-               <div onClick={() => setIsOpen(true)}>
+               <div onClick={() => handleCreate()}>
                   <Button className="btn btn-primary"><i className="text-muted material-icons md-post_add"></i>Add New Brand</Button>
                </div>
             </div>
@@ -121,10 +136,7 @@ export const Brands = () => {
                                  </figcaption>
                                  <div className="card-footer">
                                     <div>
-                                       <button value={index} className="btn btn-edit rounded font-sm hover-up" onClick={() => {
-                                          setIndexEdit(index)
-                                          setIsEdit(true)
-                                       }} >
+                                       <button value={index} className="btn btn-edit rounded font-sm hover-up" onClick={() => openModal(item._id as string)} >
                                           <MdModeEditOutline />
                                        </button>
                                     </div>
@@ -136,23 +148,7 @@ export const Brands = () => {
                                  </div>
                               </figure>
                            </div>
-                           <ModalCustomTitle control={control}
-                              functionSubmit={onEditSumit(data[indexEdit]._id as string)}
-                              title="Edit brand" name="title"
-                              modalIsOpen={modalIsEdit}
-                              errorMessage={errors.title?.message}
-                              setIsOpen={setIsEdit} placeholder="Brand">
-                              <div className="mt-5">
-                                 <label htmlFor="product_name" className="form-label">Image</label>
-                                 <div className="relative">
-                                    <input
 
-                                       type="file" name="image-brand"
-                                       onChange={(e) => handleChange(e)} className="form-control" />
-                                 </div>
-                                 <ImageUpload isLoadingImage={isLoadingImage} image={data[indexEdit].images?.url} handleDeleteImage={() => dispatch(deleteImage(data[index].images?.public_id as string))} />
-                              </div>
-                           </ModalCustomTitle>
                         </Fragment>
 
                      })}
@@ -161,22 +157,54 @@ export const Brands = () => {
             </div>
          </section>
 
-         <ModalCustomTitle control={control}
-            functionSubmit={onSubmit}
-            title="Create brand" name="title"
-            modalIsOpen={modalIsOpen}
-            errorMessage={errors.title?.message}
-            setIsOpen={setIsOpen} placeholder="Brand">
-            <div className="mt-5">
-               <label htmlFor="product_name" className="form-label">Image</label>
-               <div className="relative undefined">
-                  <input
-                     type="file" name="image-brand"
-                     onChange={(e) => handleChange(e)} className="form-control" />
-               </div>
-               {dataUpload ? <ImageUpload isLoadingImage={isLoadingImage} image={dataUpload[0]?.url} handleDeleteImage={() => dispatch(deleteImage(dataUpload[0].public_id!))} /> : <ImageUpload />}
-            </div>
-         </ModalCustomTitle>
+
+         {task === "Create" ? (
+            // Hiển thị nội dung cho chế độ "Create"
+            <>
+               <ModalCustomTitle control={control}
+                  functionSubmit={onSubmit}
+                  title="Create brand" name="title"
+                  modalIsOpen={modalIsOpen}
+                  errorMessage={errors.title?.message}
+                  setIsOpen={setIsOpen} placeholder="Brand">
+                  <div className="mt-5">
+                     <label htmlFor="product_name" className="form-label">Image</label>
+                     <div className="relative undefined">
+                        <input
+                           type="file" name="image-brand"
+                           onChange={(e) => handleUpload(e)} className="form-control" />
+                     </div>
+                     {dataUpload ? <ImageUpload isLoadingImage={isLoadingImage} image={dataUpload[0]?.url} handleDeleteImage={() => dispatch(deleteImage(dataUpload[0].public_id!))} /> : <ImageUpload />}
+                  </div>
+               </ModalCustomTitle>
+            </>
+         ) : (
+
+            <>
+               <ModalCustomTitle control={control}
+                  functionSubmit={onEditSumit(dataUpdate?._id as string)}
+                  title="Edit brand" name="title"
+                  modalIsOpen={modalIsOpen}
+                  errorMessage={errors.title?.message}
+                  setIsOpen={setIsOpen} placeholder="Brand">
+                  <div className="mt-5">
+                     <label htmlFor="product_name" className="form-label">Image</label>
+                     <div className="relative">
+                        <input
+                           type="file" name="image-brand"
+                           onChange={(e) => handleUpload(e)} className="form-control" />
+                     </div>
+                     {dataUpdate && dataUpload ? <ImageUpload isLoadingImage={isLoadingImage} image={dataUpload[0]?.url || dataUpdate?.images?.url} handleDeleteImage={() => dispatch(deleteImage(dataUpdate?.images?.public_id || dataUpload[0].public_id!))} /> : <ImageUpload />}
+                  </div>
+               </ModalCustomTitle>
+            </>
+         )}
+
+         {/* create  */}
+
+
+         {/* edit  */}
+
       </>
    )
 }

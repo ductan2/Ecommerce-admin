@@ -23,7 +23,7 @@ export const menuData: MenuDataType =
                   { "href": "/admin/products/list", "text": "Product list" },
                   { "href": "/admin/products/category", "text": "Categories Product" },
                   { "href": "/admin/products/color", "text": "Colors" },
-                  { "href": "/admin/products/add", "text": "Add products" }
+                  { "href": "/admin/products", "text": "Add products" }
                ]
             }
          },
@@ -63,38 +63,6 @@ export const menuData: MenuDataType =
       {
          menu_item: {
             menu_link: {
-
-               "icon": "material-icons md-add_box",
-               "text": "Add product"
-            },
-            "submenu": {
-               "links": [
-                  { "href": "page-form-product-1.html", "text": "Add product 1" },
-                  { "href": "page-form-product-2.html", "text": "Add product 2" },
-                  { "href": "page-form-product-3.html", "text": "Add product 3" },
-                  { "href": "page-form-product-4.html", "text": "Add product 4" }
-               ]
-            }
-         }
-      },
-      {
-         menu_item: {
-            menu_link: {
-
-               "icon": "material-icons md-monetization_on",
-               "text": "Transactions"
-            },
-            "submenu": {
-               "links": [
-                  { "href": "page-transactions-1.html", "text": "Transaction 1" },
-                  { "href": "page-transactions-2.html", "text": "Transaction 2" }
-               ]
-            }
-         }
-      },
-      {
-         menu_item: {
-            menu_link: {
                "icon": "material-icons md-person",
                "text": "Customer"
             },
@@ -114,8 +82,8 @@ export const menuData: MenuDataType =
             },
             "submenu": {
                "links": [
-                  { "href": "/admin/blogs/add-blog", "text": "Add Blog" },
-                  { "href": "/admin/blogs/blog-list", "text": "Blog List" },
+                  { "href": "/admin/blogs", "text": "Add Blog" },
+                  { "href": "/admin/blogs/list", "text": "Blog List" },
                   { "href": "/admin/blogs/category", "text": "Blog Category List" }
                ]
             }

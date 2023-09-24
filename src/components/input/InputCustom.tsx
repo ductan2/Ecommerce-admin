@@ -11,12 +11,12 @@ interface props extends React.InputHTMLAttributes<HTMLInputElement> {
    id?: string;
    label: string
 }
-export const InputCustom = ({ type, name, id, placeholder, control, label,className, errorMessage, ...rest }: props) => {
+export const InputCustom = ({type, name, id, placeholder, control, label, className, errorMessage, ...rest }: props) => {
 
    const { field } = useController({
       control,
       name: name || "",
-      defaultValue: "",
+      defaultValue:  "",
    });
    return (
       <>

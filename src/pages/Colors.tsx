@@ -24,7 +24,7 @@ export const Colors = () => {
    useEffect(() => {
       dispatch(getColors())
    }, [dispatch])
-   const { handleSubmit, control, reset } = useForm<Color>({
+   const { handleSubmit, control,reset } = useForm<Color>({
       mode: "onChange",
       resolver: yupResolver(schemaWithTitle("color")),
       defaultValues: {
@@ -32,7 +32,6 @@ export const Colors = () => {
       }
    });
    const { data, isLoading, dataUpdate } = useSelector((state: RootState) => state.colors)
-
    const onSubmit = handleSubmit((data) => {
       try {
          // console.log(data.title)
@@ -90,7 +89,7 @@ export const Colors = () => {
    useEffect(() => {
       setColors(data)
    }, [data])
-   const handleEdit = async (id: string) => {
+   const openModal = async (id: string) => {
       setIsItem(id);
       await dispatch(getColorById(id)); // Chờ cho dữ liệu được tải xong
       setIsOpen(true);
@@ -106,6 +105,7 @@ export const Colors = () => {
    return (
 
       <>
+    
          <section className="content-main">
 
             <Heading title="Colors" slogan="Add, edit or delete a color" isSearch placeholder="Search colors" />
@@ -155,7 +155,7 @@ export const Colors = () => {
                                        <td>{formatDate(item.created_at as string)}</td>
                                        <td>{formatDate(item.updated_at as string)}</td>
 
-                                       <ActionDetails _id={item._id} handleDelete={handleDelete} handleEdit={() => handleEdit(item._id as string)} />
+                                       <ActionDetails _id={item._id} handleDelete={handleDelete} openModal={() => openModal(item._id as string)} />
                                     </tr>
                                  ))}
                               </tbody>

@@ -30,9 +30,9 @@ export type ResponseMessageType = {
    path?: 'email' | 'password'
 }
 export type UploadImageType = {
-   url?: string
-   asset_id?: string
-   public_id?: string
+   url: string
+   asset_id: string
+   public_id: string
  }
 
 export interface MenuDataType {

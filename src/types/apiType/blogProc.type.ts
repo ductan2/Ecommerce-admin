@@ -1,6 +1,6 @@
 export interface BlogCate {
-   _id: string;
+   _id?: string;
    title: string;
-   created_at: string;
-   updated_at: string;
+   created_at?: string;
+   updated_at?: string;
 }

@@ -1,44 +1,104 @@
 import { useSelector } from "react-redux"
 import { Product } from "../types/apiType/product.type"
-import { useEffect, useState } from "react"
-import { AsyncStateWithPage, getAllProduct, getPageAndProduct } from "../features/product/productSlice"
-import { useAppDispatch } from "../store/store"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { AsyncStateWithPage, deleteProduct, getAllProduct } from "../features/product/productSlice"
+import { RootState, useAppDispatch } from "../store/store"
 import { Loading } from "../components/loading/Loading"
 import { Heading } from "../components/heading/Heading"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import ReactPaginate from "react-paginate"
+import { Button } from "antd"
+import swal from "sweetalert2"
+import { getAllBrand } from "../features/brand/brandSlice"
+import { SelectCustom } from "../components/select/SelectCustom"
+
 export const Products = () => {
-
-
-  const dispatch = useAppDispatch()
   const [nextPage, setNextPage] = useState<number>(1);
   const [pageCount, setPageCount] = useState<number>(0)
-  const { data, isLoading, page } = useSelector((state: { products: AsyncStateWithPage<Product> }) => state.products)
+  const [brandItem, setBrandItem] = useState<string>("All")
+  const [sortItem, setSortItem] = useState<string>("")
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
-  const searchParams = location.search;
+  const dispatch = useAppDispatch()
+  const searchParams = location.search.slice(1);
 
+  const { data: brandData } = useSelector((state: RootState) => state.brand)
+  const { data, isLoading, page } = useSelector((state: { products: AsyncStateWithPage<Product> }) => state.products)
   const getData = (page: number, searchParams: string) => {
-    if (searchParams) {
-      dispatch(getAllProduct({ page: page, query: searchParams }))
-    }
-    else
-      dispatch(getAllProduct({ page: page }))
-    dispatch(getPageAndProduct())
-  }
+    const query = searchParams ? `${searchParams}` : '';
+    dispatch(getAllProduct({ page, query }));
+  };
+
   useEffect(() => {
     getData(nextPage, searchParams)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextPage, searchParams, dispatch])
 
   useEffect(() => {
-    setPageCount(Math.ceil(page!))// total page 
+    setPageCount(page || 0)// total page 
   }, [page])
 
-  if (isLoading) return <Loading isFull />
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useEffect(() => {
+    dispatch(getAllBrand())
+  }, [dispatch]
+  )
+  useEffect(() => {
+    if (brandItem !== "All") {
+      getData(nextPage, `brand=${brandItem}`)
+    }
+  }, [brandItem, dispatch, nextPage])
   const handlePageClick = (event: { selected: number }) => {
     const selectedPage = event.selected + 1;
     setNextPage(+selectedPage)
   };
+  const handleDelete = (id: string) => {
+    swal({
+      title: 'Are you sure delete it?',
+      type: 'error',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then(function () {
+      dispatch(deleteProduct(id))
+      swal(
+        'Deleted!',
+        'Product has been deleted.',
+        'success'
+      )
+      window.location.reload()
+    })
+  }
+
+  const handleQuery = () => {
+    const searchTerm = inputRef.current?.value;
+    const currentSearchParams = new URLSearchParams(location.search);
+
+    if (searchTerm !== "") {
+      currentSearchParams.set("title", searchTerm as string);
+    } else {
+      currentSearchParams.delete("title");
+    }
+    const newSearchParams = currentSearchParams.toString();
+    navigate(`/admin/products/list?${newSearchParams}`);
+  };
+  const handleSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSortItem(e.target.value)
+    navigate(`/admin/products/list?sort=${e.target.value}`);
+  }
+  const handleBrandChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedBrand = e.target.value;
+    const currentSearchParams = new URLSearchParams(location.search);
+    if (selectedBrand === "All") {
+      currentSearchParams.delete("brand");
+    } else {
+      currentSearchParams.set("brand", selectedBrand);
+    }
+    setBrandItem(selectedBrand)
+    const newSearchParams = currentSearchParams.toString();
+    navigate(`/admin/products/list?${newSearchParams}`);
+  };
+  if (isLoading) return <Loading isFull />
   return (
     <>
       <section className="content-main">
@@ -46,22 +106,32 @@ export const Products = () => {
         <div className="card mb-4">
           <header className="card-header">
             <div className="row gx-3">
-              <div className="col-lg-4 col-md-6 me-auto">
-                <input type="text" placeholder="Search..." className="form-control" />
+              <div className="col-lg-4 col-md-6 me-auto searchform">
+                <div className="input-group">
+                  <input name="search" type="text" className="form-control"
+                    placeholder="Search term" ref={inputRef}/>
+                  <button className="btn btn-light bg" type="button" onClick={handleQuery}>
+                    <i className="material-icons md-search"></i>
+                  </button>
+                </div>
               </div>
               <div className="col-lg-2 col-6 col-md-3">
-                <select className="form-select" defaultValue={"All category"}>
-                  <option selected>All category</option>
-                  <option>Electronics</option>
-                  <option>Clothings</option>
-                  <option>Something else</option>
-                </select>
+
+                <SelectCustom
+                  value={brandItem}
+                  data={brandData}
+                  defaulTitle="All Brand"
+                  onChange={handleBrandChange}
+                />
+
               </div>
               <div className="col-lg-2 col-6 col-md-3">
-                <select className="form-select" defaultValue={"Latest added"}>
-                  <option selected>Latest added</option>
-                  <option>Cheap first</option>
-                  <option>Most viewed</option>
+                <select className="form-select" value={sortItem} onChange={handleSort}>
+                  <option value="" defaultChecked>Sort</option>
+                  <option value={"price"}>Price (low to high)</option>
+                  <option value={"-price"}>Price (high to low)</option>
+                  <option value={"title"}>Name (a-&gt;z)</option>
+                  <option value={"-title"}>Name (z-&gt;a)</option>
                 </select>
               </div>
             </div>
@@ -77,23 +147,22 @@ export const Products = () => {
                     </a>
                     <div className="info-wrap">
                       <div >
-                        <a href="#" className="title text-truncate">{product.title.length > 25 ? product.title.slice(0, 25) + "..." : product.title}</a>
-
+                        <a href="#" className="title text-truncate"><strong className="font-bold mr-5">Name:</strong>{product.title.length > 25 ? product.title.slice(0, 25) + "..." : product.title}</a>
+                        <span><strong className="font-bold mr-5">Brand:</strong>{product.brand}</span>
                       </div>
                       <div className="price mb-2">${product.price}</div>
-                      <a href="#" className="btn btn-sm font-sm rounded btn-brand mr-3"> <i className="material-icons md-edit"></i> Edit </a>
-                      <a href="#" className="btn btn-sm font-sm btn-light rounded"> <i className="material-icons md-delete_forever"></i> Delete </a>
+                      <Link to={`/admin/products/${product._id}`}>
+                        <Button className="btn btn-sm font-sm rounded btn-brand mr-3"> <i className="material-icons md-edit" ></i> Edit </Button>
+                      </Link>
+                      <Button className="btn btn-sm font-sm btn-light rounded" onClick={() => handleDelete(product._id as string)}> <i className="material-icons md-delete_forever"></i> Delete </Button>
                     </div>
                   </div>
                 </div>
               ))}
 
-
-
             </div>
 
           </div>
-
         </div>
         <div className="pagination-area mt-30 mb-50">
           <ReactPaginate
@@ -101,7 +170,7 @@ export const Products = () => {
             nextLabel=">"
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
-            forcePage={nextPage-1}
+            forcePage={nextPage - 1}
             onPageActive={handlePageClick}
             pageCount={pageCount}
             previousLabel="<"
@@ -118,9 +187,8 @@ export const Products = () => {
             breakClassName="page-item"
             breakLinkClassName="page-link"
           />
-
         </div>
-      </section>
+      </section >
     </>
   )
 }
