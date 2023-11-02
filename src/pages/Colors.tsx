@@ -24,7 +24,7 @@ export const Colors = () => {
    useEffect(() => {
       dispatch(getColors())
    }, [dispatch])
-   const { handleSubmit, control,reset } = useForm<Color>({
+   const { handleSubmit, control, reset } = useForm<Color>({
       mode: "onChange",
       resolver: yupResolver(schemaWithTitle("color")),
       defaultValues: {
@@ -34,15 +34,13 @@ export const Colors = () => {
    const { data, isLoading, dataUpdate } = useSelector((state: RootState) => state.colors)
    const onSubmit = handleSubmit((data) => {
       try {
-         // console.log(data.title)
          dispatch(createColor(data.title))
          Swal({
             title: 'Success!',
             text: "Color has been created.",
             type: 'success',
          }).then(() => {
-
-            window.location.reload()
+            dispatch(getColors())
          })
 
       } catch (error) {
@@ -57,7 +55,7 @@ export const Colors = () => {
             text: "Color has been deleted.",
             type: 'success',
          }).then(() => {
-            window.location.reload()
+            dispatch(getColors())
          })
       } catch (error) {
          console.log(error)
@@ -73,19 +71,14 @@ export const Colors = () => {
             type: 'success',
          }).then(() => {
             setIsOpen(false)
-            window.location.reload()
+            dispatch(getColors())
          })
       } catch (error) {
          console.log(error)
       }
    })
 
-   // useEffect(() => {
-   //    async function resetForm() {
-   //       await reset(dataUpdate); // Đợi cho reset hoàn tất trước khi truy cập form
-   //    }
-   //    resetForm();
-   // }, [isItem, reset]);
+
    useEffect(() => {
       setColors(data)
    }, [data])
@@ -105,17 +98,17 @@ export const Colors = () => {
    return (
 
       <>
-    
+
          <section className="content-main">
 
-            <Heading title="Colors" slogan="Add, edit or delete a color" isSearch placeholder="Search colors" />
+            <Heading title="Colors" slogan="Add, edit or delete a color" />
 
             <div className="card">
                <div className="card-body">
                   <div className="row">
                      <div className="col-md-3">
                         <form onSubmit={onSubmit}>
-                           <InputCustom label="Color" control={control} type="text" placeholder="Color" name="title"/>
+                           <InputCustom label="Color" control={control} type="text" placeholder="Color" name="title" />
                            <div className="d-grid">
                               <Button className="btn btn-primary">
                                  Create color

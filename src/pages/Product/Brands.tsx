@@ -51,7 +51,6 @@ export const Brands = () => {
    const { data: dataUpload, isLoading: isLoadingImage } = useSelector((state: RootState) => state.upload)
    if (isLoading) return <Loading isFull />
    const onSubmit = handleSubmit((data) => {
-      console.log(dataUpload)
       data.images = dataUpload[0] as UploadImageType
       try {
          dispatch(createBrand({ title: data.title, images: data.images }))
@@ -61,7 +60,8 @@ export const Brands = () => {
             type: 'success',
          }).then(() => {
             setIsOpen(false)
-            window.location.reload()
+            // window.location.reload()
+            dispatch(getAllBrand())
          })
       } catch (error) {
          console.log("errors:", error)
@@ -80,7 +80,7 @@ export const Brands = () => {
             text: "Brand has been deleted.",
             type: 'success',
          }).then(() => {
-            window.location.reload()
+            dispatch(getAllBrand())
          })
       }
    }
@@ -93,7 +93,7 @@ export const Brands = () => {
             type: 'success',
          }).then(() => {
             setIsOpen(false)
-            window.location.reload()
+            dispatch(getAllBrand())
          })
       } catch (error) {
          console.log("errors:", error)

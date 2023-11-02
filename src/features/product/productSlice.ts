@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import productServices from './productServices';
 import { AsyncState } from '../../types/CommonTpye';
 import { Product } from '../../types/apiType/product.type';
+import { toast } from 'react-toastify';
+import swal from 'sweetalert2';
 
 export interface AsyncStateWithPage<T> extends AsyncState<T> {
    itemPerPage: number;
@@ -11,7 +14,7 @@ export interface AsyncStateWithPage<T> extends AsyncState<T> {
    page?: number
 }
 
-const ITEMPERPAGE = 20;
+const ITEMPERPAGE = 10;
 const initialState: AsyncStateWithPage<Product> = {
    data: [],
    isError: false,
@@ -22,10 +25,9 @@ const initialState: AsyncStateWithPage<Product> = {
    totalItem: 0,
 }
 
-export const getAllProduct = createAsyncThunk<{ data: Product[], total: number }, { query?: string, page?: number, limit?: number }>("products/get-all-product", async ({ query, page, limit = ITEMPERPAGE }) => {
+export const getAllProducts = createAsyncThunk<{ data: Product[], total: number }, { query?: string, page?: number, limit?: number }>("products/get-all-product", async ({ query, page, limit = ITEMPERPAGE }) => {
    try {
       const response = await productServices.getAllProductServices(query, page, limit);
-      console.log(response.data.result)
       return response.data.result;
    } catch (error) {
       return error
@@ -65,32 +67,31 @@ export const deleteProduct = createAsyncThunk<Product, string>("products/delete"
       return thunkAPI.rejectWithValue(error);
    }
 })
+
 export const productSlice = createSlice({
    name: 'products',
    initialState,
    reducers: {},
    extraReducers: (builder) => {
-      builder.addCase(getAllProduct.pending, (state) => {
+      builder.addCase(getAllProducts.pending, (state) => {
          state.isLoading = true;
       })
-         .addCase(getAllProduct.fulfilled, (state, action) => {
+         .addCase(getAllProducts.fulfilled, (state, action) => {
             const data = action.payload.data;
             state.isLoading = false;
             state.isError = false
             state.isSuccess = true;
-            
             if (Array.isArray(data)) {
                state.data = data;
             }
             state.totalItem = action.payload.total;
-            console.log(state.totalItem)
             state.page = Math.ceil(state.totalItem / state.itemPerPage);
          })
-         .addCase(getAllProduct.rejected, (state, action) => {
+         .addCase(getAllProducts.rejected, (state) => {
             state.isLoading = false;
             state.isError = true
             state.isSuccess = false;
-            state.message = action.error as string;
+
          })
          .addCase(createProduct.pending, (state) => {
             state.isLoading = true;
@@ -100,14 +101,48 @@ export const productSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             state.data.push(action.payload);
+            if (state.isSuccess) {
+               swal({
+                  title: "Success!",
+                  text: "Product has been created.",
+                  type: "success",
+               }).then(() => {
+                  window.location.href = "/admin/products/list";
+               });
+            }
          })
          .addCase(createProduct.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
-            state.message = action.error as string;
+            if (action.payload) {
+               toast.error((action.payload as any).response?.data[0].error);
+            }
          })
-        .addCase(getProductById.pending, (state) => {
+         .addCase(deleteProduct.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(deleteProduct.fulfilled, (state) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            if (state.isSuccess) {
+               swal(
+                  'Deleted!',
+                  'Product has been deleted.',
+                  'success'
+               )
+            }
+         })
+         .addCase(deleteProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            if (action.payload) {
+               toast.error((action.payload as any).response?.data[0].error);
+            }
+         })
+         .addCase(getProductById.pending, (state) => {
             state.isLoading = true;
          })
          .addCase(getProductById.fulfilled, (state, action) => {
@@ -132,12 +167,27 @@ export const productSlice = createSlice({
             if (index !== -1) {
                state.data[index] = action.payload;
             }
+            if (state.isSuccess) {
+               swal({
+                  title: "Success!",
+                  text: "Product has been updated.",
+                  type: "success",
+               }).then(() => {
+                  window.location.href = "/admin/products/list";
+               });
+            }
          })
          .addCase(updateProduct.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
-            state.message = action.error as string;
+            if (state.isError) {
+               swal({
+                  title: "Error!",
+                  text: (action.payload as any).response.data[0].error,
+                  type: "error",
+               })
+            }
          })
    }
 })

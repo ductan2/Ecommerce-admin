@@ -27,8 +27,7 @@ export const productSchema = yup.object().shape({
 });
 export const schemaBlog = yup.object().shape({
    title: yup.string().required("Title is Required"),
-   description: yup.string().required("Description is Required"),
-   category: yup.array().min(1).required("Category is Required"),
-   
+   description: yup.string().required("Description is Required"), // Assuming TrustedHTML is some kind of string or can be validated as a string
+   category: yup.array().of(yup.string()).min(1).required("Category is Required"),
 });
 

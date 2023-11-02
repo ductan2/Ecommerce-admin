@@ -27,7 +27,7 @@ export const Header = ({ isLogo, toggleSidebar }: props) => {
         isLogo ? (
           <div className="col-brand">
             <Link to="/admin" className="brand-wrap">
-              <img src="/assets/imgs/brands/vendor-2.png" className="logo" alt="Nest Dashboard" />
+              <img src="/assets/imgs/theme/logo.svg" className="logo" alt="Nest Dashboard" />
             </Link>
           </div>
         ) : (

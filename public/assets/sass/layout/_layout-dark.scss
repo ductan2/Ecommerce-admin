@@ -20,7 +20,7 @@ body.dark{
             border-bottom: 1px solid $gray-700;
         }
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6 ,span{
         color: #f6f6f6;
     }
     /// menu-darken
@@ -58,14 +58,25 @@ body.dark{
         }
     }
     
+    .ant-select-selector{
+        background-color: #1e2231 !important;
+        border :1px solid #303547 !important;
+        color: #fff !important;
+    }
+    .ant-select-selection-placeholder{
+        color: white !important;
+    }
 
     /// card-darken
     .card, .card-header{
-        background-color:#2a3042; 
+        background-color:#2a3042 !important; 
     }
     .card{ border:1px solid #303547 }
     .card-header{ border-color: $gray-700; }
-
+    .card-footer{
+        background-color: #2a3042;
+        border: 1px solid #303547;
+    }
     .box{
         background:$gray-800;
     }

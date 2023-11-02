@@ -9,6 +9,7 @@ export const getAllBlogServices = async (query?: string) => {
    return http.get('/blogs/get-all')
 }
 export const createBlogServices = async (data: Blog) => {
+   
    return http.post('/blogs', data, auth)
 }
 export const updateBlogServices = async (id: string, data: Blog) => {

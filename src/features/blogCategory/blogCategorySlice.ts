@@ -25,7 +25,6 @@ export const getAllBlogCategory = createAsyncThunk<BlogCate[]>("category-blog/ge
 export const createBlogCategory = createAsyncThunk<BlogCate, string>("category-blog/create", async (title, thunkAPI) => {
    try {
       const response = await blogCategoryServices.createCategoryBlogServices({ title });
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -35,7 +34,6 @@ export const createBlogCategory = createAsyncThunk<BlogCate, string>("category-b
 export const deleteBlogCategory = createAsyncThunk<BlogCate, string>("category-blog/delete", async (id, thunkAPI) => {
    try {
       const response = await blogCategoryServices.deleteBlogCategoryServices(id);
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -44,7 +42,6 @@ export const deleteBlogCategory = createAsyncThunk<BlogCate, string>("category-b
 export const updateBlogCategory = createAsyncThunk<BlogCate, { id: string, title: string }>("category-blog/update", async (data, thunkAPI) => {
    try {
       const response = await blogCategoryServices.updateBlogCategoryServices(data.id, data.title);
-      console.log(response);
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -59,7 +56,7 @@ export const getBlogCategoryById = createAsyncThunk<BlogCate, string>("category-
       return thunkAPI.rejectWithValue(error);
    }
 })
-export const customerSlice = createSlice({
+export const blogSlice = createSlice({
    name: 'category-blog',
    initialState,
    reducers: {},
@@ -148,4 +145,4 @@ export const customerSlice = createSlice({
    }
 })
 
-export default customerSlice.reducer;
+export default blogSlice.reducer;

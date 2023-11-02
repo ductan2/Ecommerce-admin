@@ -1,3 +1,4 @@
+
 import { UploadImageType } from "../CommonTpye";
 
 interface ratings {
@@ -18,7 +19,7 @@ export interface Product {
    images?: UploadImageType[];
    trending: boolean
    featured: boolean
-   color?: string[];
+   color?: string[] | string;
    rating_distribution: number;
    ratings?: ratings[];
    created_at?: string;

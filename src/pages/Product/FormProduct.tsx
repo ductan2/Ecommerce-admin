@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Select } from "antd";
-import Dropzone from "react-dropzone";
-import swal from "sweetalert2";
+import Dropzone from "react-dropzone"; 
 import slugify from "slugify";
 import { RootState, useAppDispatch } from "../../store/store";
 
@@ -19,7 +18,6 @@ import { UploadImageType } from "../../types/CommonTpye";
 import { SelectCustom } from "../../components/select/SelectCustom";
 import ImageUpload from "../../components/upload/ImageUpload";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { deleteImage, uploadImage } from "../../features/uploads/uploadSlice";
 import { createProduct, getProductById, updateProduct } from "../../features/product/productSlice";
 import { getAllBrand } from "../../features/brand/brandSlice";
@@ -36,7 +34,6 @@ export const ProductForm = () => {
    const [trending, setTrending] = useState<boolean>(false);
    const [image, setImage] = useState<UploadImageType[]>([]);
    const dispatch = useAppDispatch();
-   const navigate = useNavigate();
 
    const {
       handleSubmit,
@@ -177,19 +174,11 @@ export const ProductForm = () => {
 
       try {
          if (id) {
-            dispatch(updateProduct({ data, id }));
+            dispatch(updateProduct({ data, id }))
          } else {
             dispatch(createProduct(data));
          }
-         swal({
-            title: "Success!",
-            text: id
-               ? "Product has been updated."
-               : "Product has been created.",
-            type: "success",
-         }).then(() => {
-            navigate("/admin/products/list");
-         });
+
       } catch (error) {
          console.log("Error:", error);
       }
@@ -203,7 +192,7 @@ export const ProductForm = () => {
          <section className="content-main">
             <div className="row">
                <div className="col-9">
-                  <Heading title={id ? "Edit Product" : "Add New Product"}/>
+                  <Heading title={id ? "Edit Product" : "Add New Product"} />
                </div>
                <form action="" onSubmit={onSubmit} className="row">
                   <div className="col-lg-6">
@@ -312,7 +301,11 @@ export const ProductForm = () => {
                                           <p>Drag 'n' drop some files here, or click to select files</p>
                                           <div className="list-image mt-15">
                                              {image.length === 0 ? (
-                                                <img src="/img-upload.png" className="mt-15" alt="" />
+                                                loadingImage ? (
+                                                   <Loading isFull />
+                                                ) : (
+                                                   <img src="/img-upload.png" className="mt-15" alt="" />
+                                                )
                                              ) : (
                                                 image.map((item: UploadImageType) => (
                                                    <ImageUpload
@@ -337,8 +330,9 @@ export const ProductForm = () => {
                         </div>
                         <div className="card-body">
                            <div className="row gx-2">
-                              <div className="col-sm-6 mb-3">
+                              <div className="col-sm-12 mb-3">
                                  <SelectCustom
+                                    defaulTitle="All brands"
                                     value={brand}
                                     data={brandData}
                                     name="Brand"

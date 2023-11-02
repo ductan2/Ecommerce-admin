@@ -17,18 +17,15 @@ const initialState: AsyncState<UploadImageType> = {
 
 export const uploadImage = createAsyncThunk<UploadImageType[], File[] | File>("uploads/", async (data: File[] | File) => {
    try {
-      console.log("data", data)
       const formData = new FormData();
       if (Array.isArray(data)) {
          for (let i = 0; i < data.length; i++) {
-            console.log("data[i]", data[i])
             formData.append("image", data[i]);
          }
       }
       else {
          formData.append("image", data);
       }
-      console.log("formData", formData)
       const response = await uploadServices.uploadImageServices(formData);
       return response.result;
    } catch (error) {

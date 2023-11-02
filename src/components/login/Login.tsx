@@ -45,10 +45,10 @@ export const Login = () => {
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        console.log(error.response.data)
         const formError = error.response.data
+        console.log("🚀 ~ file: Login.tsx:49 ~ onSubmit ~ formError:", formError)
 
-        const { message, path } = formError
+        const { error: message, path } = formError
 
         const field = path || message.split(' ')[0].toLowerCase()
         setError(field as keyof FormDataLogin, {

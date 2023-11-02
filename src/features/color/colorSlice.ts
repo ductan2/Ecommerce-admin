@@ -27,7 +27,7 @@ export const getColors = createAsyncThunk<Color[]>("color/get-all", async () => 
 export const createColor = createAsyncThunk<Color, string>("color/create", async (title, thunkAPI) => {
    try {
       const response = await colorServices.createColorServices({ title });
-      console.log(response)
+     
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -37,7 +37,6 @@ export const createColor = createAsyncThunk<Color, string>("color/create", async
 export const deleteColor = createAsyncThunk<Color, string>("color/delete", async (id, thunkAPI) => {
    try {
       const response = await colorServices.deleteColorServices(id);
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -46,7 +45,7 @@ export const deleteColor = createAsyncThunk<Color, string>("color/delete", async
 export const updateColor = createAsyncThunk<Color, { id: string, title: string }>("color/update", async (data, thunkAPI) => {
    try {
       const response = await colorServices.updateColorServices(data.id, data.title);
-      console.log(response);
+      
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -56,7 +55,6 @@ export const updateColor = createAsyncThunk<Color, { id: string, title: string }
 export const getColorById = createAsyncThunk<Color, string>("color/get-by-id", async (id, thunkAPI) => {
    try {
       const response = await colorServices.getColorByIdServices(id);
-      console.log("response", response.data);
       return response.data.result;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -126,7 +124,6 @@ export const customerSlice = createSlice({
             state.dataUpdate = action.payload;
          })
          .addCase(getColorById.rejected, (state, action) => {
-            console.log("Action error", action.error)
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

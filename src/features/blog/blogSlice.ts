@@ -25,7 +25,6 @@ export const getAllBlog = createAsyncThunk<Blog[], string | undefined>("blog/get
 export const createBlog = createAsyncThunk<Blog, Blog>("blog/create", async (data, thunkAPI) => {
    try {
       const response = await BlogServices.createBlogServices(data);
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -35,7 +34,6 @@ export const createBlog = createAsyncThunk<Blog, Blog>("blog/create", async (dat
 export const deleteBlog = createAsyncThunk<Blog, string>("blog/delete", async (id, thunkAPI) => {
    try {
       const response = await BlogServices.deleteBlogServices(id);
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);

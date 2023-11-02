@@ -26,22 +26,20 @@ export const getAllCategoryProduct = createAsyncThunk<CategoryProduct[]>("catego
 export const createCategoryProduct = createAsyncThunk<CategoryProduct, string>("category-product/create", async (title, thunkAPI) => {
    try {
       const response = await categoryProcServices.createCategoryProductService({ title });
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
    }
 })
-export const deleteCategoryProduct = createAsyncThunk<CategoryProduct, string>("color/delete", async (id, thunkAPI) => {
+export const deleteCategoryProduct = createAsyncThunk<CategoryProduct, string>("category-product/delete", async (id, thunkAPI) => {
    try {
       const response = await categoryProcServices.deleteCategoryProductService(id);
-      console.log(response)
       return response.data;
    } catch (error) {
       return thunkAPI.rejectWithValue(error);
    }
 })
-export const updateCategoryProduct = createAsyncThunk<CategoryProduct, { id: string, title: string }>("color/delete", async (data, thunkAPI) => {
+export const updateCategoryProduct = createAsyncThunk<CategoryProduct, { id: string, title: string }>("category-product/delete", async (data, thunkAPI) => {
    try {
       const response = await categoryProcServices.updateCategoryProductService(data.id, { title: data.title });
       return response.data;
@@ -50,7 +48,7 @@ export const updateCategoryProduct = createAsyncThunk<CategoryProduct, { id: str
    }
 })
 
-export const getCategoryProductById = createAsyncThunk<CategoryProduct, string>("color/get-by-id", async (id, thunkAPI) => {
+export const getCategoryProductById = createAsyncThunk<CategoryProduct, string>("category-product/get-by-id", async (id, thunkAPI) => {
    try {
       const response = await categoryProcServices.getCategoryProductByIdService(id);
       return response.data;
@@ -120,7 +118,6 @@ export const customerSlice = createSlice({
             state.dataUpdate = action.payload;
          })
          .addCase(getCategoryProductById.rejected, (state, action) => {
-            console.log("Action error", action.error)
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

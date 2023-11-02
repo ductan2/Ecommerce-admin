@@ -35,7 +35,6 @@ export const BlogList = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   }
   const handleDeleteBlog = (idBlog: string, image: string | UploadImageType) => {
-    console.log(idBlog, image)
     try {
 
       swal({
@@ -55,8 +54,8 @@ export const BlogList = () => {
           'success'
         )
         setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+          dispatch(getAllBlog())
+        }, 200)
       })
     } catch (error) {
       console.log(error)
@@ -125,7 +124,7 @@ export const BlogList = () => {
                         {item.title} </a>
                       <span><strong className="font-bold mr-5">Auth:</strong>{item.author}</span>
                     </div>
-                    <span><strong className="font-bold mr-5">Create:</strong>{formatDate(item.craeted_at as string)}</span>
+                    <span><strong className="font-bold mr-5">Create:</strong>{formatDate(item.created_at as string)}</span>
                     <div className="interaction mb-2">
                       <div>
                         <AiOutlineLike /> {item.likes?.length}

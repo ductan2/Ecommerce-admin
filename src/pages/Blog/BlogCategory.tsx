@@ -48,7 +48,9 @@ export const BlogCategory = () => {
         'Product has been deleted.',
         'success'
       )
-      window.location.reload()
+      setTimeout(() => {
+        dispatch(getAllBlogCategory())
+      }, 500);
     })
   }
   useEffect(() => {
@@ -73,7 +75,10 @@ export const BlogCategory = () => {
         type: 'success',
       }).then(() => {
         setIsOpen(false)
-        window.location.reload()
+        dispatch(getAllBlogCategory())
+        reset({
+          title: ""
+        })
       })
     } catch (error) {
       console.log(error)
@@ -87,8 +92,10 @@ export const BlogCategory = () => {
         text: "Category blog has been created.",
         type: 'success',
       }).then(() => {
-
-        window.location.reload()
+        dispatch(getAllBlogCategory())
+        reset({
+          title: ""
+        })
       })
     } catch (error) {
       console.log(error)
@@ -98,7 +105,7 @@ export const BlogCategory = () => {
   return (
     <>
       <section className="content-main">
-        <Heading title='Categories Blog' slogan='Add, edit or delete a category' isSearch placeholder='Search Categories ' />
+        <Heading title='Categories Blog' slogan='Add, edit or delete a category' />
         <div className="card">
           <div className="card-body">
             <div className="row">

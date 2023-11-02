@@ -32,16 +32,11 @@ export const menuData: MenuDataType =
       {
          menu_item: {
             menu_link: {
+               "href": "/admin/orders",
                "icon": "material-icons md-shopping_cart",
                "text": "Orders"
             },
-            "submenu": {
-               "links": [
-                  { "href": "/admin/orders", "text": "Order list" },
-                  { "href": "page-orders-2.html", "text": "Order list 2" },
-                  { "href": "page-orders-detail.html", "text": "Order detail" }
-               ]
-            }
+
          }
       },
       {
@@ -96,7 +91,7 @@ export const menuData: MenuDataType =
                "icon": "material-icons md-stars",
                "text": "Brands"
             },
-            
+
          }
       },
       {

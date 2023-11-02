@@ -3090,7 +3090,7 @@ body.dark {
     border-right: 1px solid #383e50; }
     body.dark .navbar-aside .aside-top {
       border-bottom: 1px solid #383e50; }
-  body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6 {
+  body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6, body.dark span {
     color: #f6f6f6; }
   body.dark .menu-aside .menu-item .icon {
     color: rgba(173, 181, 189, 0.7); }
@@ -3118,12 +3118,21 @@ body.dark {
     body.dark .main-header .nav-link:hover, body.dark .main-header .nav-link.active {
       background-color: #383e50;
       color: #fff; }
+  body.dark .ant-select-selector {
+    background-color: #1e2231 !important;
+    border: 1px solid #303547 !important;
+    color: #fff !important; }
+  body.dark .ant-select-selection-placeholder {
+    color: white !important; }
   body.dark .card, body.dark .card-header {
-    background-color: #2a3042; }
+    background-color: #2a3042 !important; }
   body.dark .card {
     border: 1px solid #303547; }
   body.dark .card-header {
     border-color: #383e50; }
+  body.dark .card-footer {
+    background-color: #2a3042;
+    border: 1px solid #303547; }
   body.dark .box {
     background: #2f3446; }
   body.dark .table {

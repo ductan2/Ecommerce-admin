@@ -41,7 +41,8 @@ export const CategoriesProduct = () => {
                 text: "Category product has been created.",
                 type: 'success',
             }).then(() => {
-                window.location.reload()
+                dispatch(getAllCategoryProduct())
+                reset()
             })
 
         } catch (error) {
@@ -56,7 +57,7 @@ export const CategoriesProduct = () => {
                 text: "Category product has been deleted.",
                 type: 'success',
             }).then(() => {
-                window.location.reload()
+                dispatch(getAllCategoryProduct())
             })
         } catch (error) {
             console.log(error)
@@ -82,7 +83,7 @@ export const CategoriesProduct = () => {
                 type: 'success',
             }).then(() => {
                 setIsOpen(false)
-                window.location.reload()
+                dispatch(getAllCategoryProduct())
             })
         } catch (error) {
             console.log(error)
@@ -92,7 +93,7 @@ export const CategoriesProduct = () => {
     return (
         <>
             <section className="content-main">
-                <Heading title='Categories Product' slogan='Add, edit or delete a category' isSearch placeholder='Search Categories' />
+                <Heading title='Categories Product' slogan='Add, edit or delete a category'  />
                 <div className="card">
                     <div className="card-body">
                         <div className="row">

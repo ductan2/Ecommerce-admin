@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { Product } from "../types/apiType/product.type"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { AsyncStateWithPage, deleteProduct, getAllProduct } from "../features/product/productSlice"
+import { AsyncStateWithPage, deleteProduct, getAllProducts } from "../features/product/productSlice"
 import { RootState, useAppDispatch } from "../store/store"
 import { Loading } from "../components/loading/Loading"
 import { Heading } from "../components/heading/Heading"
@@ -27,7 +27,7 @@ export const Products = () => {
   const { data, isLoading, page } = useSelector((state: { products: AsyncStateWithPage<Product> }) => state.products)
   const getData = (page: number, searchParams: string) => {
     const query = searchParams ? `${searchParams}` : '';
-    dispatch(getAllProduct({ page, query }));
+    dispatch(getAllProducts({ page, query }));
   };
 
   useEffect(() => {
@@ -47,12 +47,14 @@ export const Products = () => {
     if (brandItem !== "All") {
       getData(nextPage, `brand=${brandItem}`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandItem, dispatch, nextPage])
   const handlePageClick = (event: { selected: number }) => {
     const selectedPage = event.selected + 1;
     setNextPage(+selectedPage)
   };
   const handleDelete = (id: string) => {
+    console.log("🚀 ~ file: Products.tsx:57 ~ handleDelete ~ id:", id)
     swal({
       title: 'Are you sure delete it?',
       type: 'error',
@@ -61,12 +63,8 @@ export const Products = () => {
       cancelButtonText: 'No, keep it'
     }).then(function () {
       dispatch(deleteProduct(id))
-      swal(
-        'Deleted!',
-        'Product has been deleted.',
-        'success'
-      )
-      window.location.reload()
+      
+      dispatch(getAllProducts({ page: 1, query: searchParams }))
     })
   }
 
@@ -109,7 +107,7 @@ export const Products = () => {
               <div className="col-lg-4 col-md-6 me-auto searchform">
                 <div className="input-group">
                   <input name="search" type="text" className="form-control"
-                    placeholder="Search term" ref={inputRef}/>
+                    placeholder="Search term" ref={inputRef} />
                   <button className="btn btn-light bg" type="button" onClick={handleQuery}>
                     <i className="material-icons md-search"></i>
                   </button>

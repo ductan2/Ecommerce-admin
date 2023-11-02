@@ -1,4 +1,4 @@
-import ReactQuill from "react-quill"
+import ReactQuill, { Value } from "react-quill"
 import { useEffect, useState, useMemo } from "react"
 import { Heading } from "../../components/heading/Heading"
 import 'react-quill/dist/quill.snow.css';
@@ -25,15 +25,15 @@ export const AddBlogCategory = () => {
    const [cateblog, setCateblog] = useState<string[]>([])
    const { id: idBlog } = useParams<{ id: string }>()
    const [imageBlog, setImageBlog] = useState<UploadImageType>(undefined!)
-   const { handleSubmit, getValues, setValue, control, reset, formState: { errors } } = useForm<Blog>({
-      mode: "onChange",
-      resolver: yupResolver(schemaBlog),
-      defaultValues: {
-         title: "",
-         description: "",
-         category: [],
-      }
-   })
+      const { handleSubmit, getValues, setValue, control, reset, formState: { errors } } = useForm<Blog>({
+         mode: "onChange",
+         resolver: yupResolver(schemaBlog),
+         defaultValues: {
+            title: "",
+            description: "",
+            category: [],
+         }
+      })
    const { data: CateBlogData, isLoading } = useSelector((state: RootState) => state.blogCategory)
    const { data: dataUpload, isLoading: isLoadingImage } = useSelector((state: RootState) => state.upload)
    const { dataUpdate } = useSelector((state: RootState) => state.blog)
@@ -169,7 +169,7 @@ export const AddBlogCategory = () => {
                                              className="mt-3"
                                              {...field}
                                              onChange={(value) => field.onChange(value)}
-                                             value={field.value}
+                                             value={field.value as Value} 
                                           />
                                        )}
                                     />
@@ -194,7 +194,6 @@ export const AddBlogCategory = () => {
                            <hr className="mb-4 mt-0" />
 
                            <div>
-                              <Button className="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</Button>
                               <Button type="submit" className="btn btn-md rounded font-sm hover-up">Publich</Button>
                            </div>
                         </div>
