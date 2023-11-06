@@ -20,7 +20,7 @@ export enum statusOrder {
 }
 export interface Order {
    _id: string; // Assumed to be a string, but it could be an ObjectId
-   products: ProductOrder;
+   products: ProductOrder[];
    payment_intent: Payment_intent_type;
    order_status: statusOrder;
    orderby: string; // Assumed to be a string, but it could be an ObjectId

@@ -194,7 +194,9 @@ export const Brands = () => {
                            type="file" name="image-brand"
                            onChange={(e) => handleUpload(e)} className="form-control" />
                      </div>
-                     {dataUpdate && dataUpload ? <ImageUpload isLoadingImage={isLoadingImage} image={dataUpload[0]?.url || dataUpdate?.images?.url} handleDeleteImage={() => dispatch(deleteImage(dataUpdate?.images?.public_id || dataUpload[0].public_id!))} /> : <ImageUpload />}
+                     {dataUpdate && dataUpload ? <ImageUpload isLoadingImage={isLoadingImage}
+                      image={dataUpload[0]?.url || dataUpdate?.images?.url} 
+                      handleDeleteImage={() => dispatch(deleteImage(dataUpdate?.images?.public_id || dataUpload[0].public_id!))} /> : <ImageUpload />}
                   </div>
                </ModalCustomTitle>
             </>
